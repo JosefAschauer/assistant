@@ -108,13 +108,13 @@ export default {
 
 	mounted() {
 		this.getTasks()
-		subscribe('assistant:task:updated', this.updateTask)
-		subscribe('assistant:task:status:updated', this.updateTaskStatus)
+		subscribe('ai_assistant:task:updated', this.updateTask)
+		subscribe('ai_assistant:task:status:updated', this.updateTaskStatus)
 	},
 
 	beforeUnmount() {
-		unsubscribe('assistant:task:updated', this.updateTask)
-		unsubscribe('assistant:task:status:updated', this.updateTaskStatus)
+		unsubscribe('ai_assistant:task:updated', this.updateTask)
+		unsubscribe('ai_assistant:task:status:updated', this.updateTaskStatus)
 	},
 
 	methods: {
@@ -125,7 +125,7 @@ export default {
 					taskTypeId: this.taskType.id,
 				},
 			}
-			const url = generateOcsUrl('apps/assistant/api/v1/tasks')
+			const url = generateOcsUrl('apps/ai_assistant/api/v1/tasks')
 			axios.get(url, req).then(response => {
 				this.tasks = response.data?.ocs?.data?.tasks
 			}).catch(error => {

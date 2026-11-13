@@ -140,7 +140,7 @@ export default {
 		return {
 			categorySubmenu: null,
 			openMenuId: null,
-			useModernStyle: loadState('assistant', 'use-modern-style', false),
+			useModernStyle: loadState('ai_assistant', 'use-modern-style', false),
 		}
 	},
 

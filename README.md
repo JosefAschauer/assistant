@@ -2,7 +2,11 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
-# Nextcloud Assistant
+# Nextcloud Custom Assistant
+
+Fork of [Nextcloud Assistant](https://github.com/nextcloud/assistant). It is not the official app. It can be installed beside the stock assistant as app id `ai_assistant`. Chat with AI stores a selected model on each conversation and offers it from the same bottom-right advanced-options menu as the other canvases. The header icon is named Nextcloud Custom Assistant.
+
+License: AGPL-3.0-or-later. Original copyright notices stay in place.
 
 [![REUSE status](https://api.reuse.software/badge/github.com/nextcloud/assistant)](https://api.reuse.software/info/github.com/nextcloud/assistant)
 

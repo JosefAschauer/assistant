@@ -239,7 +239,7 @@ export default {
 			}
 		},
 		onNewRecording(blob) {
-			const url = generateOcsUrl('/apps/assistant/api/v1/input-file')
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/input-file')
 			const formData = new FormData()
 			formData.append('data', blob)
 			formData.append('filename', 'recording.wav')
@@ -268,7 +268,7 @@ export default {
 				fileId,
 			})
 			*/
-			return generateOcsUrl('apps/assistant/api/v1/task/{taskId}/output-file/{fileId}/download', {
+			return generateOcsUrl('apps/ai_assistant/api/v1/task/{taskId}/output-file/{fileId}/download', {
 				taskId: this.providedCurrentTaskId(),
 				fileId,
 			})
@@ -278,7 +278,7 @@ export default {
 				return
 			}
 
-			const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/file/{fileId}/share', {
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/file/{fileId}/share', {
 				taskId: this.providedCurrentTaskId(),
 				fileId,
 			})
@@ -297,7 +297,7 @@ export default {
 				return
 			}
 
-			const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/file/{fileId}/save', {
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/file/{fileId}/save', {
 				taskId: this.providedCurrentTaskId(),
 				fileId,
 			})
@@ -331,7 +331,7 @@ export default {
 				return
 			}
 
-			const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/file/{fileId}/save', {
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/file/{fileId}/save', {
 				taskId: this.providedCurrentTaskId(),
 				fileId,
 			})

@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Select the chat model in "Chat with AI" from the same bottom-right three-dot menu as the other canvases ("Show advanced options"). The choice is stored on the conversation and does not change the instance-wide provider preference.
+
+### Changed
+- Name this instance "Nextcloud Custom Assistant" so its header icon is distinct from the stock Nextcloud Assistant.
+
 ## 4.1.0 - 2026-10-26
 
 ### Added

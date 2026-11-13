@@ -4,9 +4,10 @@
 -->
 <template>
 	<NcHeaderButton
-		id="assistant"
-		:aria-label="t('assistant', 'Nextcloud Assistant')"
-		:description="t('assistant', 'Nextcloud Assistant header menu entry')"
+		id="ai-assistant"
+		:aria-label="label"
+		:description="label"
+		:title="label"
 		@click="$emit('click')">
 		<template #icon>
 			<AssistantIcon :size="20" />
@@ -26,5 +27,10 @@ export default {
 		NcHeaderButton,
 	},
 	emits: ['click'],
+	computed: {
+		label() {
+			return t('assistant', 'Nextcloud Custom Assistant')
+		},
+	},
 }
 </script>

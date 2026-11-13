@@ -7,9 +7,9 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\TaskProcessing;
+namespace OCA\AI_assistant\TaskProcessing;
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 use OCP\IL10N;
 use OCP\TaskProcessing\EShapeType;
 use OCP\TaskProcessing\ITaskType;

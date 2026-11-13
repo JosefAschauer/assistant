@@ -12,26 +12,24 @@ import { subscribe } from '@nextcloud/event-bus'
 import { loadState } from '@nextcloud/initial-state'
 
 /**
- * - Expose OCA.Assistant.openAssistantForm to let apps use the assistant
+ * - Expose OCA.AIAssistant.openAssistantForm to let apps use the assistant
  * - Add a header right menu entry
  * - Listen to notification event
  */
 function init() {
-	if (!OCA.Assistant) {
+	if (!OCA.AIAssistant) {
 		/**
 		 * @namespace
 		 */
-		OCA.Assistant = {
+		OCA.AIAssistant = {
 			openAssistantForm,
 			openAssistantTask,
 		}
-		// to keep backward compatibility (with apps that already integrate the assistant, like Text)
-		OCA.TPAssistant = OCA.Assistant
 
 		subscribe('notifications:action:execute', handleNotification)
-		if (loadState('assistant', 'assistant-enabled')) {
+		if (loadState('ai_assistant', 'assistant-enabled')) {
 			addAssistantMenuEntry()
-			OCA.Assistant.last_target_language = loadState('assistant', 'last-target-language')
+			OCA.AIAssistant.last_target_language = loadState('ai_assistant', 'last-target-language')
 		}
 	}
 }

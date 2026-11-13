@@ -13,7 +13,7 @@ registerCustomPickerElement('assistant_sticker_generation', async (el, { provide
 		{
 			providerId,
 			accessible,
-			taskType: 'assistant:text2sticker',
+			taskType: 'ai_assistant:text2sticker',
 			outputKey: 'image',
 			multipleImages: false,
 		},

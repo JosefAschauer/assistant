@@ -7,11 +7,11 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Listener;
+namespace OCA\AI_assistant\Listener;
 
-use OCA\Assistant\Service\NotificationService;
-use OCA\Assistant\Service\SystemTagService;
-use OCA\Assistant\Service\TaskProcessingService;
+use OCA\AI_assistant\Service\NotificationService;
+use OCA\AI_assistant\Service\SystemTagService;
+use OCA\AI_assistant\Service\TaskProcessingService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\IRootFolder;

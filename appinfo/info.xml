@@ -4,8 +4,8 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <info>
-	<id>assistant</id>
-	<name>Nextcloud Assistant</name>
+	<id>ai_assistant</id>
+	<name>Nextcloud Custom Assistant</name>
 	<summary>Process and transform text</summary>
 	<description><![CDATA[
 This app brings a user interface to use the Nextcloud text processing feature.
@@ -62,10 +62,10 @@ Known providers:
 
 More details on how to set this up in the [admin docs](https://docs.nextcloud.com/server/latest/admin_manual/ai/index.html)
 ]]>	</description>
-	<version>4.1.0</version>
+	<version>4.1.2</version>
 	<licence>agpl</licence>
 	<author>Julien Veyssier</author>
-	<namespace>Assistant</namespace>
+	<namespace>AI_assistant</namespace>
 	<documentation>
 		<developer>https://github.com/nextcloud/assistant</developer>
 	</documentation>
@@ -84,8 +84,8 @@ More details on how to set this up in the [admin docs](https://docs.nextcloud.co
 		<nextcloud min-version="35" max-version="36"/>
 	</dependencies>
 	<settings>
-		<admin>OCA\Assistant\Settings\Admin</admin>
-		<personal>OCA\Assistant\Settings\Personal</personal>
-		<personal-section>OCA\Assistant\Settings\PersonalSection</personal-section>
+		<admin>OCA\AI_assistant\Settings\Admin</admin>
+		<personal>OCA\AI_assistant\Settings\Personal</personal>
+		<personal-section>OCA\AI_assistant\Settings\PersonalSection</personal-section>
 	</settings>
 </info>

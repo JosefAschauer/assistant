@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Db\ChattyLLM;
+namespace OCA\AI_assistant\Db\ChattyLLM;
 
 use OCP\AppFramework\Db\Entity;
 use OCP\DB\Types;
@@ -27,6 +27,8 @@ use OCP\DB\Types;
  * @method \void setAgencyPendingActions(?string $agencyPendingActions)
  * @method \void setAssignmentId(?int $id)
  * @method \int|null getAssignmentId()
+ * @method \string|null getModel()
+ * @method \void setModel(?string $model)
  */
 class Session extends Entity implements \JsonSerializable {
 	/** @var string */
@@ -63,6 +65,14 @@ class Session extends Entity implements \JsonSerializable {
 	 */
 	protected $assignmentId;
 
+	/**
+	 * Selected chat model. Null keeps the provider default for this session.
+	 * Untyped so a session loaded before the column existed does not throw.
+	 *
+	 * @var string|null
+	 */
+	protected $model = null;
+
 	public static $columns = [
 		'id',
 		'user_id',
@@ -73,7 +83,8 @@ class Session extends Entity implements \JsonSerializable {
 		'summary',
 		'is_summary_up_to_date',
 		'is_remembered',
-		'assignment_id'
+		'assignment_id',
+		'model',
 	];
 	public static $fields = [
 		'id',
@@ -85,7 +96,8 @@ class Session extends Entity implements \JsonSerializable {
 		'summary',
 		'isSummaryUpToDate',
 		'isRemembered',
-		'assignmentId'
+		'assignmentId',
+		'model',
 	];
 
 	public function __construct() {
@@ -98,6 +110,7 @@ class Session extends Entity implements \JsonSerializable {
 		$this->addType('isSummaryUpToDate', Types::SMALLINT);
 		$this->addType('isRemembered', Types::SMALLINT);
 		$this->addType('assignmentId', Types::BIGINT);
+		$this->addType('model', Types::STRING);
 	}
 
 	#[\ReturnTypeWillChange]
@@ -113,6 +126,7 @@ class Session extends Entity implements \JsonSerializable {
 			'is_summary_up_to_date' => $this->getIsSummaryUpToDate(),
 			'is_remembered' => $this->getIsRemembered(),
 			'assignment_id' => $this->getAssignmentId(),
+			'model' => $this->getModel(),
 		];
 	}
 

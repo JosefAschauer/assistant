@@ -48,8 +48,8 @@ export default {
 	},
 
 	mounted() {
-		OCA.Assistant.openAssistantForm({
-			appId: 'assistant',
+		OCA.AIAssistant.openAssistantForm({
+			appId: 'ai_assistant',
 			taskType: this.taskType,
 			taskTypeIdList: [this.taskType],
 			closeOnResult: false,

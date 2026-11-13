@@ -5,15 +5,15 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Service;
+namespace OCA\AI_assistant\Service;
 
 use DateTime;
 use Html2Text\Html2Text;
 use OC\User\NoUserException;
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Db\TaskNotification;
-use OCA\Assistant\Db\TaskNotificationMapper;
-use OCA\Assistant\ResponseDefinitions;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Db\TaskNotification;
+use OCA\AI_assistant\Db\TaskNotificationMapper;
+use OCA\AI_assistant\ResponseDefinitions;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\Constants;
@@ -95,6 +95,7 @@ class AssistantService {
 		private IAppConfig $appConfig,
 		private IShareManager $shareManager,
 		private SystemTagService $systemTagService,
+		private ChatModelService $chatModelService,
 	) {
 		$this->informationSources = [
 			'add_card' => $this->l10n->t('Nextcloud Deck'),
@@ -425,6 +426,17 @@ class AssistantService {
 				}
 			}
 			if ($typeId === TextToTextChat::ID) {
+				$modelField = $this->chatModelService->getChatModelField($availableTaskTypes);
+				$chatOptionalInputShape = [];
+				$chatOptionalInputShapeEnumValues = [];
+				$chatOptionalInputShapeDefaults = [];
+				if ($modelField !== null) {
+					$chatOptionalInputShape = ['model' => $modelField['shape']];
+					$chatOptionalInputShapeEnumValues = ['model' => $modelField['values']];
+					if ($modelField['default'] !== null) {
+						$chatOptionalInputShapeDefaults = ['model' => $modelField['default']];
+					}
+				}
 				// add the chattyUI virtual task type
 				$types[] = [
 					'id' => 'chatty-llm',
@@ -435,9 +447,9 @@ class AssistantService {
 					'inputShapeEnumValues' => [],
 					'inputShapeDefaults' => [],
 					'outputShape' => [],
-					'optionalInputShape' => [],
-					'optionalInputShapeEnumValues' => [],
-					'optionalInputShapeDefaults' => [],
+					'optionalInputShape' => $chatOptionalInputShape,
+					'optionalInputShapeEnumValues' => $chatOptionalInputShapeEnumValues,
+					'optionalInputShapeDefaults' => $chatOptionalInputShapeDefaults,
 					'optionalOutputShape' => [],
 					'priority' => self::TASK_TYPE_PRIORITIES['chatty-llm'] ?? 1000,
 					'preferredProviderName' => $preferredProviderName,

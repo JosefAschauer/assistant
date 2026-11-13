@@ -135,9 +135,9 @@ export default {
 
 	data() {
 		return {
-			state: loadState('assistant', 'config'),
-			providers: loadState('assistant', 'availableProviders'),
-			rememberedConversations: loadState('assistant', 'rememberedSessions'),
+			state: loadState('ai_assistant', 'config'),
+			providers: loadState('ai_assistant', 'availableProviders'),
+			rememberedConversations: loadState('ai_assistant', 'rememberedSessions'),
 			optionsToSave: {},
 		}
 	},
@@ -175,7 +175,7 @@ export default {
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/assistant/config')
+			const url = generateUrl('/apps/ai_assistant/config')
 			return axios.put(url, req)
 				.then((response) => {
 					showSuccess(t('assistant', 'Assistant options saved'))

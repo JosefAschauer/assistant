@@ -44,6 +44,6 @@
 		"platform": {
 			"php": "8.3"
 		},
-		"autoloader-suffix": "Assistant"
+		"autoloader-suffix": "AiAssistant"
 	}
 }

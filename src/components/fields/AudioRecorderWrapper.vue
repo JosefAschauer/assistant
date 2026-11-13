@@ -128,9 +128,9 @@ export default {
 
 	methods: {
 		async start() {
-			if (!OCA.Assistant.encoderRegistered) {
+			if (!OCA.AIAssistant.encoderRegistered) {
 				await register(await connect())
-				OCA.Assistant.encoderRegistered = true
+				OCA.AIAssistant.encoderRegistered = true
 			}
 			// Create new audio stream
 			try {

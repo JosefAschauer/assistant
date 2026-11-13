@@ -63,7 +63,7 @@ export default {
 		imageUrl() {
 			// TODO find a way to get a preview for an output file (no mimetype because it's deduced from the name in core)
 			return this.isOutput
-				? generateOcsUrl('apps/assistant/api/v1/task/{taskId}/output-file/{fileId}/preview', {
+				? generateOcsUrl('apps/ai_assistant/api/v1/task/{taskId}/output-file/{fileId}/preview', {
 						taskId: this.myCurrentTaskId,
 						fileId: this.fileId,
 					})
@@ -88,7 +88,7 @@ export default {
 
 	methods: {
 		getFileInfo() {
-			const url = generateOcsUrl('apps/assistant/api/v1/file/{fileId}/info', { fileId: this.fileId })
+			const url = generateOcsUrl('apps/ai_assistant/api/v1/file/{fileId}/info', { fileId: this.fileId })
 			axios.get(url)
 				.then((response) => {
 					this.fileInfo = response.data.ocs.data
@@ -100,7 +100,7 @@ export default {
 		 * unnamed for the component's lifetime.
 		 */
 		getOutputFileInfo(retry = true) {
-			const url = generateOcsUrl('apps/assistant/api/v1/task/{taskId}/output-file/{fileId}/info', {
+			const url = generateOcsUrl('apps/ai_assistant/api/v1/task/{taskId}/output-file/{fileId}/info', {
 				taskId: this.myCurrentTaskId,
 				fileId: this.fileId,
 			})

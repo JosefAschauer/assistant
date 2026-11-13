@@ -227,8 +227,8 @@ export default {
 			isRecording: false,
 			isUploading: false,
 			attachedFileIds: [],
-			audioChatAvailable: loadState('assistant', 'audio_chat_available', false),
-			multimodalChatAvailable: loadState('assistant', 'multimodal_chat_available', false),
+			audioChatAvailable: loadState('ai_assistant', 'audio_chat_available', false),
+			multimodalChatAvailable: loadState('ai_assistant', 'multimodal_chat_available', false),
 			picker: (callback) => getFilePickerBuilder(t('assistant', 'Choose a file'))
 				.setMultiSelect(true)
 				.allowDirectories(false)
@@ -313,7 +313,7 @@ export default {
 			})
 		},
 		onNewRecording(blob) {
-			const url = generateOcsUrl('/apps/assistant/api/v1/input-file')
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/input-file')
 			const formData = new FormData()
 			formData.append('data', blob)
 			formData.append('filename', 'chat-input.wav')

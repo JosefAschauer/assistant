@@ -5,14 +5,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests;
+namespace OCA\AI_assistant\Tests;
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 
 class TextProcessingServiceTest extends \PHPUnit\Framework\TestCase {
 
 	public function testDummy() {
 		$app = new Application();
-		$this->assertEquals('assistant', $app::APP_ID);
+		$this->assertEquals('ai_assistant', $app::APP_ID);
 	}
 }

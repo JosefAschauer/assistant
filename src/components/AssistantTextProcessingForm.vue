@@ -19,6 +19,7 @@
 		<div class="task-input-output-form">
 			<ChattyLLMInputForm v-if="['chatty-llm', 'assignments'].includes(mySelectedTaskTypeId)"
 				:is-assignment="mySelectedTaskTypeId === 'assignments'"
+				:task-type="chatTaskType"
 				class="chatty-inputs"
 				@open-chat="onOpenChatFromAssignment" />
 			<div v-else class="container chatty-inputs">
@@ -371,6 +372,9 @@ export default {
 			}
 			return null
 		},
+		chatTaskType() {
+			return this.taskTypes.find(tt => tt.id === CHAT_TASK_TYPE_ID) ?? null
+		},
 		sortedTaskTypes() {
 			const filteredTaskTypes = this.taskTypeIdList !== null
 				? this.taskTypes.slice().filter(t => this.taskTypeIdList.find(tt => tt === t.id))
@@ -468,7 +472,7 @@ export default {
 		},
 		formattedOutput() {
 			if (this.mySelectedTaskTypeId === 'OCP\\TextToImage\\Task') {
-				return window.location.protocol + '//' + window.location.host + generateUrl('/apps/assistant/i/{imageGenId}', { imageGenId: this.myOutput })
+				return window.location.protocol + '//' + window.location.host + generateUrl('/apps/ai_assistant/i/{imageGenId}', { imageGenId: this.myOutput })
 			}
 			return this.myOutput.trim()
 		},
@@ -557,7 +561,7 @@ export default {
 			})
 		},
 		parseFile({ filePath, fileId }) {
-			const url = generateOcsUrl('/apps/assistant/api/v1/parse-file')
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/parse-file')
 			return axios.post(url, {
 				filePath,
 				fileId,
@@ -565,7 +569,7 @@ export default {
 		},
 		getTaskTypes() {
 			this.loadingTaskTypes = true
-			axios.get(generateOcsUrl('/apps/assistant/api/v1/task-types'))
+			axios.get(generateOcsUrl('/apps/ai_assistant/api/v1/task-types'))
 				.then((response) => {
 					const taskTypes = response.data.ocs.data.types
 					// check if selected task type is in the list, fallback to text2text
@@ -609,7 +613,7 @@ export default {
 							if (!tt.inputShapeDefaults.origin_language) {
 								tt.inputShapeDefaults.origin_language = tt.inputShapeEnumValues.origin_language[0].value
 							}
-							const defaultTargetLanguage = OCA.Assistant.last_target_language
+							const defaultTargetLanguage = OCA.AIAssistant.last_target_language
 							if (defaultTargetLanguage) {
 								tt.inputShapeDefaults.target_language = defaultTargetLanguage
 							}
@@ -636,22 +640,22 @@ export default {
 				|| this.myInputs?.text // used in document generation
 
 			if (typeof lastInput === 'string' || lastInput instanceof String) {
-				OCA.Assistant.last_text_input = lastInput
+				OCA.AIAssistant.last_text_input = lastInput
 			}
 
 			this.$refs?.translateForm?.setDefaultValues(true)
 			this.$refs?.assistantFormInputs?.setDefaultValues(true)
 
 			// keep last prompt if it's a string and if the new task type has text input
-			if (OCA.Assistant.last_text_input) {
+			if (OCA.AIAssistant.last_text_input) {
 				if (this.selectedTaskType?.inputShape?.input && this.selectedTaskType?.inputShape?.input.type === SHAPE_TYPE_NAMES.Text) {
-					this.myInputs.input = OCA.Assistant.last_text_input
+					this.myInputs.input = OCA.AIAssistant.last_text_input
 				}
 				if (this.selectedTaskType?.inputShape?.source_input && this.selectedTaskType?.inputShape?.source_input.type === SHAPE_TYPE_NAMES.Text) {
-					this.myInputs.source_input = OCA.Assistant.last_text_input
+					this.myInputs.source_input = OCA.AIAssistant.last_text_input
 				}
 				if (this.selectedTaskType?.inputShape?.text && this.selectedTaskType?.inputShape?.text.type === SHAPE_TYPE_NAMES.Text) {
-					this.myInputs.text = OCA.Assistant.last_text_input
+					this.myInputs.text = OCA.AIAssistant.last_text_input
 				}
 			}
 			saveLastSelectedTaskType(this.mySelectedTaskTypeId)

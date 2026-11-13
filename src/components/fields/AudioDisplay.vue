@@ -56,11 +56,11 @@ export default {
 					rToken: getRequestToken(),
 				})
 				*/
-				? generateOcsUrl('apps/assistant/api/v1/task/{taskId}/output-file/{fileId}/download', {
+				? generateOcsUrl('apps/ai_assistant/api/v1/task/{taskId}/output-file/{fileId}/download', {
 						taskId: this.taskId,
 						fileId: this.fileId,
 					})
-				: generateOcsUrl('apps/assistant/api/v1/file/{fileId}/display', { fileId: this.fileId })
+				: generateOcsUrl('apps/ai_assistant/api/v1/file/{fileId}/display', { fileId: this.fileId })
 		},
 	},
 

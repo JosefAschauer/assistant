@@ -6,7 +6,7 @@
 import { generateOcsUrl } from '@nextcloud/router'
 import axios from '@nextcloud/axios'
 
-const uploadEndpointUrl = generateOcsUrl('/apps/assistant/api/v1/input-file')
+const uploadEndpointUrl = generateOcsUrl('/apps/ai_assistant/api/v1/input-file')
 
 let mytimer = 0
 export function delay(callback, ms = 0) {

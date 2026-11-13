@@ -7,9 +7,9 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\BackgroundJob;
+namespace OCA\AI_assistant\BackgroundJob;
 
-use OCA\Assistant\Service\SessionSummaryService;
+use OCA\AI_assistant\Service\SessionSummaryService;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 

@@ -5,10 +5,10 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Controller;
+namespace OCA\AI_assistant\Controller;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Service\AgentSkillsService;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;

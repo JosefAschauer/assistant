@@ -225,7 +225,7 @@ export default {
 					return
 				}
 
-				const url = generateOcsUrl('/apps/assistant/api/v1/parse-file')
+				const url = generateOcsUrl('/apps/ai_assistant/api/v1/parse-file')
 				axios.post(url, {
 					filePath: nodes[0].path,
 				}).then((response) => {

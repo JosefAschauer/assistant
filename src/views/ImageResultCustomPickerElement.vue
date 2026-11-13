@@ -60,9 +60,9 @@ export default {
 	},
 
 	mounted() {
-		OCA.Assistant.openAssistantForm({
+		OCA.AIAssistant.openAssistantForm({
 			inputs: this.inputs,
-			appId: 'assistant',
+			appId: 'ai_assistant',
 			taskType: this.taskType,
 			taskTypeIdList: [this.taskType],
 			closeOnResult: false,
@@ -108,7 +108,7 @@ export default {
 				})
 		},
 		shareFile(fileId, taskId) {
-			const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/file/{fileId}/share', {
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/file/{fileId}/share', {
 				taskId,
 				fileId,
 			})

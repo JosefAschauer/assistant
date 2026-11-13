@@ -268,6 +268,29 @@
 				@submit-audio="handleSubmitAudio"
 				@background-notify="onBackgroundNotify"
 				@cancel-generation="cancelGeneration" />
+			<div v-if="showModelField" class="footer">
+				<div v-if="showAdvanced" class="footer__advanced">
+					<EnumField
+						field-key="model"
+						:value="selectedModel"
+						:field="modelField"
+						:options="modelOptions"
+						@update:value="onModelChange" />
+				</div>
+				<div class="footer--action-buttons">
+					<NcActions :force-menu="true">
+						<NcActionButton
+							:close-after-click="true"
+							@click="showAdvanced = !showAdvanced">
+							<template #icon>
+								<UnfoldLessHorizontalIcon v-if="showAdvanced" />
+								<UnfoldMoreHorizontalIcon v-else />
+							</template>
+							{{ toggleAdvancedLabel }}
+						</NcActionButton>
+					</NcActions>
+				</div>
+			</div>
 		</NcAppContent>
 		<NcDialog :key="deletionDialogKey"
 			v-model:open="deletionDialogOpen"
@@ -295,6 +318,8 @@
 import AutoFixIcon from 'vue-material-design-icons/AutoFix.vue'
 import PencilOutlineIcon from 'vue-material-design-icons/PencilOutline.vue'
 import PlusIcon from 'vue-material-design-icons/Plus.vue'
+import UnfoldLessHorizontalIcon from 'vue-material-design-icons/UnfoldLessHorizontal.vue'
+import UnfoldMoreHorizontalIcon from 'vue-material-design-icons/UnfoldMoreHorizontal.vue'
 import TrashCanOutlineIcon from 'vue-material-design-icons/TrashCanOutline.vue'
 import DeleteSweepOutlineIcon from 'vue-material-design-icons/DeleteSweepOutline.vue'
 import MemoryIcon from 'vue-material-design-icons/Memory.vue'
@@ -319,6 +344,7 @@ import ConversationBox from './ConversationBox.vue'
 import EditableTextField from './EditableTextField.vue'
 import InputArea from './InputArea.vue'
 import NoSession from './NoSession.vue'
+import EnumField from '../fields/EnumField.vue'
 import AgencyConfirmation from './AgencyConfirmation.vue'
 
 import axios, { isCancel } from '@nextcloud/axios'
@@ -345,7 +371,7 @@ import { requestBrowserNotificationPermission } from '../../utils.js'
 
 // future: type (text, image, file, etc), attachments, etc support
 
-const getChatURL = (endpoint) => generateOcsUrl('/apps/assistant/chat' + endpoint)
+const getChatURL = (endpoint) => generateOcsUrl('/apps/ai_assistant/chat' + endpoint)
 const Roles = {
 	HUMAN: 'human',
 	ASSISTANT: 'assistant',
@@ -361,6 +387,8 @@ export default {
 		DeleteSweepOutlineIcon,
 		PencilOutlineIcon,
 		PlusIcon,
+		UnfoldLessHorizontalIcon,
+		UnfoldMoreHorizontalIcon,
 		MemoryIcon,
 		LightbulbOutlineIcon,
 		TimerOutlineIcon,
@@ -383,6 +411,7 @@ export default {
 		EditableTextField,
 		InputArea,
 		NoSession,
+		EnumField,
 	},
 
 	mixins: [navAutoCollapse],
@@ -391,6 +420,10 @@ export default {
 		isAssignment: {
 			type: Boolean,
 			required: true,
+		},
+		taskType: {
+			type: Object,
+			default: null,
 		},
 	},
 
@@ -402,6 +435,7 @@ export default {
 		return {
 			// { id: number, title: string, user_id: string, timestamp: number }
 			active: null,
+			draftModel: null,
 			sessionIdsToDelete: null,
 			deletionDialogKey: 0,
 			deletionMode: false,
@@ -448,13 +482,14 @@ export default {
 			msgCursor: 0,
 			msgLimit: 20,
 			titleActionsOpen: false,
+			showAdvanced: false,
 			editingTitle: false,
 			pollMessageGenerationTimerId: null,
 			pollMessageGenerationCancel: null,
 			pollTitleGenerationTimerId: null,
-			autoplayAudioChat: loadState('assistant', 'autoplay_audio_chat', true),
+			autoplayAudioChat: loadState('ai_assistant', 'autoplay_audio_chat', true),
 			slowPickup: false,
-			agencyAvailable: loadState('assistant', 'agency_available', false),
+			agencyAvailable: loadState('ai_assistant', 'agency_available', false),
 			agencySuggestions: [
 				{
 					aria: t('assistant', 'Ask assistant, what\'s the weather today'),
@@ -506,6 +541,30 @@ export default {
 	},
 
 	computed: {
+		modelField() {
+			return this.taskType?.optionalInputShape?.model ?? null
+		},
+		modelOptions() {
+			const values = this.taskType?.optionalInputShapeEnumValues?.model
+			return Array.isArray(values) ? values : []
+		},
+		showModelField() {
+			return !this.isAssignment && this.modelField !== null && this.modelOptions.length > 0
+		},
+		toggleAdvancedLabel() {
+			return this.showAdvanced
+				? t('assistant', 'Hide advanced options')
+				: t('assistant', 'Show advanced options')
+		},
+		selectedModel() {
+			if (this.active?.model) {
+				return this.active.model
+			}
+			if (this.active === null && this.draftModel) {
+				return this.draftModel
+			}
+			return this.taskType?.optionalInputShapeDefaults?.model ?? null
+		},
 		deletionDialogOpen: {
 			get() {
 				return this.sessionIdsToDelete !== null
@@ -828,7 +887,7 @@ export default {
 		},
 
 		fetchAssignmentDetails(sessionId) {
-			const url = generateOcsUrl(`/apps/assistant/assignments/${sessionId}`)
+			const url = generateOcsUrl(`/apps/ai_assistant/assignments/${sessionId}`)
 			axios.get(url).then(response => {
 				const assignmentDetails = response.data
 				console.debug('Assignment details:', assignmentDetails)
@@ -1247,10 +1306,14 @@ export default {
 		async newSession(title = null) {
 			try {
 				this.loading.newSession = true
-				const newSessionResponse = await axios.put(getChatURL('/new_session'), {
+				const payload = {
 					timestamp: +new Date() / 1000 | 0,
 					title,
-				})
+				}
+				if (this.selectedModel) {
+					payload.model = this.selectedModel
+				}
+				const newSessionResponse = await axios.put(getChatURL('/new_session'), payload)
 				const newSessionResponseData = newSessionResponse.data
 				console.debug('newSession response:', newSessionResponseData)
 
@@ -1653,6 +1716,25 @@ export default {
 			})
 		},
 
+		async onModelChange(value) {
+			const model = value ?? ''
+			if (this.active) {
+				this.active.model = model || null
+				const session = this.sessions?.find(item => item.id === this.active.id)
+				if (session) {
+					session.model = this.active.model
+				}
+				try {
+					await axios.put(getChatURL(`/sessions/${this.active.id}`), { model })
+				} catch (error) {
+					console.error('update model error:', error)
+					showError(error?.response?.data?.error ?? t('assistant', 'The selected model is not available'))
+				}
+			} else {
+				this.draftModel = model || null
+			}
+		},
+
 		async updateLastHumanMessageContent() {
 			const lastHumanMessage = this.getLastHumanMessage()
 			if (lastHumanMessage) {
@@ -1724,7 +1806,7 @@ export default {
 					last_task_type: taskType,
 				},
 			}
-			const url = generateUrl('/apps/assistant/config')
+			const url = generateUrl('/apps/ai_assistant/config')
 			return axios.put(url, req)
 		},
 
@@ -1994,6 +2076,33 @@ export default {
 			position: sticky;
 			bottom: 0;
 			flex-shrink: 0;
+		}
+
+		.footer {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			flex-shrink: 0;
+			padding: 0 12px 4px;
+			box-sizing: border-box;
+
+			&__advanced {
+				font-weight: normal;
+				padding-bottom: 8px;
+
+				:deep(.enum-field-input) {
+					min-width: 0 !important;
+					width: 100%;
+					max-width: 480px;
+				}
+			}
+
+			&--action-buttons {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: end;
+				gap: 4px;
+			}
 		}
 
 		&__agency-suggestions {

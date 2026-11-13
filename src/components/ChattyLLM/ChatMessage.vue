@@ -301,7 +301,7 @@ export default {
 			}
 
 			if (this.isOutput) {
-				const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/file/{fileId}/save', {
+				const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/file/{fileId}/save', {
 					taskId: file.ocp_task_id ?? this.message.ocp_task_id,
 					fileId: file.file_id,
 				})
@@ -314,7 +314,7 @@ export default {
 				})
 			}
 
-			const url = generateOcsUrl('/apps/assistant/api/v1/file/{fileId}/info', { fileId: file.file_id })
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/file/{fileId}/info', { fileId: file.file_id })
 			return axios.get(url).then(response => {
 				const path = this.toViewerPath(response.data.ocs.data.path)
 				console.debug('[assistant] view input file', path)

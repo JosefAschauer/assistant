@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests;
+namespace OCA\AI_assistant\Tests;
 
-use OCA\Assistant\Db\Assignment;
+use OCA\AI_assistant\Db\Assignment;
 
 class AssignmentTest extends \PHPUnit\Framework\TestCase {
 

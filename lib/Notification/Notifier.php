@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Notification;
+namespace OCA\AI_assistant\Notification;
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\IURLGenerator;
 use OCP\L10N\IFactory;

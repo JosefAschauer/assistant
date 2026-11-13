@@ -5,9 +5,9 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Listener\FreePrompt;
+namespace OCA\AI_assistant\Listener\FreePrompt;
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 use OCP\Collaboration\Reference\RenderReferenceEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;

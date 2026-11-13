@@ -5,11 +5,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Settings;
+namespace OCA\AI_assistant\Settings;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Service\AgentSkillsService;
-use OCA\Assistant\TaskProcessing\TextToStickerTaskType;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\TaskProcessing\TextToStickerTaskType;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
 use OCP\IAppConfig;

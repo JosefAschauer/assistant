@@ -7,10 +7,10 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Listener;
+namespace OCA\AI_assistant\Listener;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Service\AssistantService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Service\AssistantService;
 use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;

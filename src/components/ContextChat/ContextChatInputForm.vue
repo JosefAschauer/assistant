@@ -236,7 +236,7 @@ export default {
 			defaultProviderKey: 'files__default',
 
 			sccEnabled: !!this.inputs.scopeType && this.inputs.scopeType !== _ScopeType.NONE && !!this.inputs.scopeList,
-			indexingComplete: loadState('assistant', 'contextChatIndexingComplete', false),
+			indexingComplete: loadState('ai_assistant', 'contextChatIndexingComplete', false),
 		}
 	},
 
@@ -341,7 +341,7 @@ export default {
 				return generateUrl('/apps/theming/img/core/filetypes/folder.svg')
 			}
 			return generateUrl(
-				'/apps/assistant/preview?id={fileId}&x=24&y=24',
+				'/apps/ai_assistant/preview?id={fileId}&x=24&y=24',
 				{ fileId: fileId.substring(`${this.defaultProviderKey}: `.length) },
 			)
 		},

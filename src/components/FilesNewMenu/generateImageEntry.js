@@ -13,7 +13,7 @@ const GenerateImageDialog = defineAsyncComponent(() => import('./GenerateImageDi
 
 export const EntryId = 'assistant-generate-image'
 
-const state = loadState('assistant', 'new-file-generate-image', {})
+const state = loadState('ai_assistant', 'new-file-generate-image', {})
 
 export const entry = {
 	id: EntryId,

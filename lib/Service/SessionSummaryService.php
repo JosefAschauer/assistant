@@ -7,15 +7,15 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Service;
+namespace OCA\AI_assistant\Service;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\BackgroundJob\GenerateNewChatSummaries;
-use OCA\Assistant\BackgroundJob\RegenerateOutdatedChatSummariesJob;
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\MessageMapper;
-use OCA\Assistant\Db\ChattyLLM\Session;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\BackgroundJob\GenerateNewChatSummaries;
+use OCA\AI_assistant\BackgroundJob\RegenerateOutdatedChatSummariesJob;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\MessageMapper;
+use OCA\AI_assistant\Db\ChattyLLM\Session;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
 use OCP\BackgroundJob\IJobList;
 use OCP\DB\Exception;
 use OCP\IAppConfig;
@@ -67,7 +67,7 @@ class SessionSummaryService {
 
 				$task = new Task(TextToText::ID, [
 					'input' => $prompt,
-				], 'assistant:summary-service', $session->getUserId());
+				], Application::APP_ID . ':summary-service', $session->getUserId());
 				$output = $this->taskProcessingService->runTaskProcessingTask($task);
 				$session->setSummary($output['output']);
 				$session->setIsSummaryUpToDate(true);

@@ -7,10 +7,10 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Controller;
+namespace OCA\AI_assistant\Controller;
 
 use OC\User\NoUserException;
-use OCA\Assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\Service\AgentSkillsService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\NoAdminRequired;
 use OCP\AppFramework\Http\Attribute\OpenAPI;

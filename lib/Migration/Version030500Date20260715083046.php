@@ -7,13 +7,13 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Migration;
+namespace OCA\AI_assistant\Migration;
 
 use Closure;
-use OCA\Assistant\Service\AssignmentsService;
-use OCA\Assistant\Service\ChatService;
-use OCA\Assistant\Service\InternalException;
-use OCA\Assistant\Service\SessionSummaryService;
+use OCA\AI_assistant\Service\AssignmentsService;
+use OCA\AI_assistant\Service\ChatService;
+use OCA\AI_assistant\Service\InternalException;
+use OCA\AI_assistant\Service\SessionSummaryService;
 use OCP\DB\ISchemaWrapper;
 use OCP\IDBConnection;
 use OCP\IUserManager;

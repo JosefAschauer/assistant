@@ -7,11 +7,11 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\BackgroundJob;
+namespace OCA\AI_assistant\BackgroundJob;
 
-use OCA\Assistant\Service\AssignmentsService;
-use OCA\Assistant\Service\InternalException;
-use OCA\Assistant\Service\UnauthorizedException;
+use OCA\AI_assistant\Service\AssignmentsService;
+use OCA\AI_assistant\Service\InternalException;
+use OCA\AI_assistant\Service\UnauthorizedException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\BackgroundJob\TimedJob;
 use Psr\Log\LoggerInterface;

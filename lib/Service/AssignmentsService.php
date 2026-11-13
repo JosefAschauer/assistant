@@ -7,13 +7,13 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Service;
+namespace OCA\AI_assistant\Service;
 
-use OCA\Assistant\BackgroundJob\RunAssignmentsJob;
-use OCA\Assistant\Db\Assignment;
-use OCA\Assistant\Db\AssignmentMapper;
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\BackgroundJob\RunAssignmentsJob;
+use OCA\AI_assistant\Db\Assignment;
+use OCA\AI_assistant\Db\AssignmentMapper;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Utility\ITimeFactory;

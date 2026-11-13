@@ -5,15 +5,15 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Controller;
+namespace OCA\AI_assistant\Controller;
 
-use OCA\Assistant\Db\Assignment;
-use OCA\Assistant\Db\AssignmentMapper;
-use OCA\Assistant\ResponseDefinitions;
-use OCA\Assistant\Service\AssignmentsService;
-use OCA\Assistant\Service\BadRequestException;
-use OCA\Assistant\Service\InternalException;
-use OCA\Assistant\Service\UnauthorizedException;
+use OCA\AI_assistant\Db\Assignment;
+use OCA\AI_assistant\Db\AssignmentMapper;
+use OCA\AI_assistant\ResponseDefinitions;
+use OCA\AI_assistant\Service\AssignmentsService;
+use OCA\AI_assistant\Service\BadRequestException;
+use OCA\AI_assistant\Service\InternalException;
+use OCA\AI_assistant\Service\UnauthorizedException;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;

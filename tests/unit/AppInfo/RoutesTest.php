@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\AppInfo;
+namespace OCA\AI_assistant\Tests\Unit\AppInfo;
 
 use PHPUnit\Framework\TestCase;
 

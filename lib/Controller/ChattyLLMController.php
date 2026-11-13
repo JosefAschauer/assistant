@@ -5,19 +5,19 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Controller;
+namespace OCA\AI_assistant\Controller;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\MessageMapper;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
-use OCA\Assistant\ResponseDefinitions;
-use OCA\Assistant\Service\AgentSkillsService;
-use OCA\Assistant\Service\AssistantService;
-use OCA\Assistant\Service\BadRequestException;
-use OCA\Assistant\Service\ChatService;
-use OCA\Assistant\Service\InternalException;
-use OCA\Assistant\Service\UnauthorizedException;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\MessageMapper;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\ResponseDefinitions;
+use OCA\AI_assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\Service\AssistantService;
+use OCA\AI_assistant\Service\BadRequestException;
+use OCA\AI_assistant\Service\ChatService;
+use OCA\AI_assistant\Service\InternalException;
+use OCA\AI_assistant\Service\UnauthorizedException;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
@@ -208,24 +208,28 @@ class ChattyLLMController extends OCSController {
 	 *
 	 * @param ?int $timestamp The session creation date
 	 * @param ?string $title The session title
-	 * @return JSONResponse<Http::STATUS_OK, array{session: AssistantChatSession}, array{}>|JSONResponse<Http::STATUS_INTERNAL_SERVER_ERROR|Http::STATUS_UNAUTHORIZED, array{error: string}, array{}>
+	 * @param ?string $model The chat model to use for this session
+	 * @return JSONResponse<Http::STATUS_OK, array{session: AssistantChatSession}, array{}>|JSONResponse<Http::STATUS_BAD_REQUEST|Http::STATUS_INTERNAL_SERVER_ERROR|Http::STATUS_UNAUTHORIZED, array{error: string}, array{}>
 	 * @throws AppConfigTypeConflictException
 	 *
 	 * 200: Chat session has been successfully created
+	 * 400: The selected model is not available
 	 * 401: User is either not logged in or not found
 	 */
 	#[NoAdminRequired]
 	#[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT, tags: ['chat_api'])]
-	public function newSession(?int $timestamp = null, ?string $title = null): JSONResponse {
+	public function newSession(?int $timestamp = null, ?string $title = null, ?string $model = null): JSONResponse {
 		try {
-			$session = $this->chatService->createChatSession($this->userId, $timestamp, $title);
+			$session = $this->chatService->createChatSession($this->userId, $timestamp, $title, $model);
 			return new JSONResponse([
 				'session' => $session->jsonSerialize(),
 			]);
+		} catch (BadRequestException $e) {
+			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to create a chat session', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to create a chat session')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('Unauthorized')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -252,9 +256,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException  $e) {
 			$this->logger->warning('Failed to update the chat session', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to update the chat session')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('Session not found')], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('Unauthorized')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -265,22 +269,27 @@ class ChattyLLMController extends OCSController {
 	 * @param integer $sessionId The chat session ID
 	 * @param string|null $title The new chat session title
 	 * @param bool|null $is_remembered The new is_remembered status: Whether to remember the insights from this chat session across all chat session
-	 * @return JSONResponse<Http::STATUS_OK, list{}, array{}>|JSONResponse<Http::STATUS_INTERNAL_SERVER_ERROR|Http::STATUS_NOT_FOUND|Http::STATUS_UNAUTHORIZED, array{error: string}, array{}>
+	 * @param string|null $model The chat model to use for this session. Pass an empty string to clear it. Omit the field to leave it unchanged.
+	 * @return JSONResponse<Http::STATUS_OK, list{}, array{}>|JSONResponse<Http::STATUS_BAD_REQUEST|Http::STATUS_INTERNAL_SERVER_ERROR|Http::STATUS_NOT_FOUND|Http::STATUS_UNAUTHORIZED, array{error: string}, array{}>
 	 *
 	 * 200: The title has been updated successfully
+	 * 400: The selected model is not available
 	 * 404: The session was not found
 	 * 401: User is not logged in
 	 */
 	#[NoAdminRequired]
 	#[OpenAPI(scope: OpenAPI::SCOPE_DEFAULT, tags: ['chat_api'])]
-	public function updateChatSession(int $sessionId, ?string $title = null, ?bool $is_remembered = null): JSONResponse {
+	public function updateChatSession(int $sessionId, ?string $title = null, ?bool $is_remembered = null, ?string $model = null): JSONResponse {
+		$updateModel = array_key_exists('model', $this->request->getParams());
 		try {
-			$this->chatService->updateSession($this->userId, $sessionId, $title, $is_remembered);
+			$this->chatService->updateSession($this->userId, $sessionId, $title, $is_remembered, $model, $updateModel);
 			return new JSONResponse();
+		} catch (BadRequestException $e) {
+			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to update the chat session', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to update the chat session')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException) {
 			return new JSONResponse(['error' => $this->l10n->t('Could not find session')], Http::STATUS_NOT_FOUND);
 		} catch (UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User is not logged in')], Http::STATUS_UNAUTHORIZED);
@@ -308,7 +317,7 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to delete the chat session', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to delete the chat session')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -338,7 +347,7 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to delete the chat sessions', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to delete the chat sessions')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -367,7 +376,7 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to get chat sessions', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to get chat sessions')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -403,9 +412,9 @@ class ChattyLLMController extends OCSController {
 			return new JSONResponse(['error' => $this->l10n->t('Failed to add a chat message')], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (BadRequestException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -436,9 +445,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to get chat messages', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to get chat messages')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -465,9 +474,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to get chat messages', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to get chat message')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -498,9 +507,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to delete a chat message', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to delete a chat message')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 	}
@@ -533,9 +542,9 @@ class ChattyLLMController extends OCSController {
 			return new JSONResponse(['error' => $this->l10n->t('Failed to schedule message generation')], Http::STATUS_INTERNAL_SERVER_ERROR);
 		} catch (BadRequestException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		}
 
@@ -571,9 +580,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException $e) {
 			$this->logger->warning('Failed to delete the last message', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to delete the last message')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		} catch (BadRequestException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);
@@ -744,9 +753,9 @@ class ChattyLLMController extends OCSController {
 		} catch (InternalException|\JsonException $e) {
 			$this->logger->warning('Failed to generate a title for the chat session', ['exception' => $e]);
 			return new JSONResponse(['error' => $this->l10n->t('Failed to generate a title for the chat session')], Http::STATUS_INTERNAL_SERVER_ERROR);
-		} catch (\OCA\Assistant\Service\NotFoundException $e) {
+		} catch (\OCA\AI_assistant\Service\NotFoundException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_NOT_FOUND);
-		} catch (\OCA\Assistant\Service\UnauthorizedException $e) {
+		} catch (\OCA\AI_assistant\Service\UnauthorizedException $e) {
 			return new JSONResponse(['error' => $this->l10n->t('User not logged in')], Http::STATUS_UNAUTHORIZED);
 		} catch (BadRequestException $e) {
 			return new JSONResponse(['error' => $e->getMessage()], Http::STATUS_BAD_REQUEST);

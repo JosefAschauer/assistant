@@ -7,10 +7,10 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Notification;
+namespace OCA\AI_assistant\Tests\Unit\Notification;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Notification\Notifier;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Notification\Notifier;
 use OCP\App\IAppManager;
 use OCP\IL10N;
 use OCP\IURLGenerator;
@@ -121,7 +121,7 @@ class NotifierTest extends TestCase {
 		$this->assertSame($notification, $prepared);
 		$this->assertSame('Your assistant reply is ready', $this->recorded['parsedSubject']);
 		$this->assertSame(self::TARGET_URL, $this->recorded['link']);
-		$this->assertSame('https://cloud.example/apps/assistant/app-dark.svg', $this->recorded['icon']);
+		$this->assertSame('https://cloud.example/apps/ai_assistant/app-dark.svg', $this->recorded['icon']);
 		$this->assertSame('View reply', $this->recorded['actionLabel']);
 		$this->assertCount(1, $this->recorded['actions']);
 	}
@@ -135,7 +135,7 @@ class NotifierTest extends TestCase {
 		$prepared = $notifier->prepare($notification, 'en');
 
 		$this->assertSame($notification, $prepared);
-		$this->assertSame('/route/assistant.assistant.getAssistantStandalonePage?sessionId=42', $this->recorded['link']);
+		$this->assertSame('/route/AI_assistant.assistant.getAssistantStandalonePage?sessionId=42', $this->recorded['link']);
 	}
 
 	public function testPrepareChatFailure(): void {
@@ -166,7 +166,7 @@ class NotifierTest extends TestCase {
 		$prepared = $notifier->prepare($notification, 'en');
 
 		$this->assertSame($notification, $prepared);
-		$this->assertSame('/route/assistant.assistant.getAssistantTaskResultPage?taskId=204', $this->recorded['link']);
+		$this->assertSame('/route/AI_assistant.assistant.getAssistantTaskResultPage?taskId=204', $this->recorded['link']);
 		$this->assertStringContainsString('has finished', $this->recorded['parsedSubject']);
 	}
 

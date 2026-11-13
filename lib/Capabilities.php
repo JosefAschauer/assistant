@@ -7,9 +7,9 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant;
+namespace OCA\AI_assistant;
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 use OCP\App\IAppManager;
 use OCP\Capabilities\IPublicCapability;
 use OCP\IAppConfig;

@@ -99,7 +99,7 @@ export default {
 	data() {
 		return {
 			prompt: '',
-			state: loadState('assistant', 'new-file-generate-image'),
+			state: loadState('ai_assistant', 'new-file-generate-image'),
 		}
 	},
 
@@ -123,7 +123,7 @@ export default {
 					numberOfImages: 1,
 				},
 				type: 'core:text2image',
-				appId: 'assistant',
+				appId: 'ai_assistant',
 				customId: 'new-image-file:' + this.context.fileid,
 			}
 

@@ -7,11 +7,11 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Controller;
+namespace OCA\AI_assistant\Tests\Unit\Controller;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Controller\ConfigController;
-use OCA\Assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Controller\ConfigController;
+use OCA\AI_assistant\Service\AgentSkillsService;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IAppConfig;
 use OCP\IConfig;

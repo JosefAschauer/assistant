@@ -7,14 +7,14 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Service;
+namespace OCA\AI_assistant\Tests\Unit\Service;
 
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\MessageMapper;
-use OCA\Assistant\Db\ChattyLLM\Session;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
-use OCA\Assistant\Service\ChatService;
-use OCA\Assistant\Service\UnauthorizedException;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\MessageMapper;
+use OCA\AI_assistant\Db\ChattyLLM\Session;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\Service\ChatService;
+use OCA\AI_assistant\Service\UnauthorizedException;
 use OCP\IUserManager;
 use OCP\Server;
 use Test\TestCase;

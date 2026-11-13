@@ -7,11 +7,11 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\TaskProcessing;
+namespace OCA\AI_assistant\TaskProcessing;
 
 use Exception;
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Service\TaskProcessingService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Service\TaskProcessingService;
 use OCP\Files\File;
 use OCP\IL10N;
 use OCP\TaskProcessing\ISynchronousProvider;

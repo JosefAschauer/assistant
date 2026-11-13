@@ -165,7 +165,8 @@
                     "summary",
                     "is_remembered",
                     "is_summary_up_to_date",
-                    "assignment_id"
+                    "assignment_id",
+                    "model"
                 ],
                 "properties": {
                     "id": {
@@ -205,6 +206,10 @@
                     "assignment_id": {
                         "type": "integer",
                         "format": "int64",
+                        "nullable": true
+                    },
+                    "model": {
+                        "type": "string",
                         "nullable": true
                     }
                 }
@@ -557,7 +562,7 @@
         }
     },
     "paths": {
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task-types": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task-types": {
             "get": {
                 "operationId": "assistant_api-get-available-task-types",
                 "summary": "Get available task types",
@@ -670,7 +675,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/tasks": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/tasks": {
             "get": {
                 "operationId": "assistant_api-get-user-tasks",
                 "summary": "Get user's tasks",
@@ -823,7 +828,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/parse-file": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/parse-file": {
             "post": {
                 "operationId": "assistant_api-parse-text-from-file",
                 "summary": "Extract text from file",
@@ -988,7 +993,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/notify": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/notify": {
             "get": {
                 "operationId": "assistant_api-get-notify-when-ready",
                 "summary": "Get the notification request for a task when it has finished",
@@ -1468,7 +1473,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/input-file": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/input-file": {
             "post": {
                 "operationId": "assistant_api-upload-input-file",
                 "summary": "Upload input file",
@@ -1631,7 +1636,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/file/{fileId}/display": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/file/{fileId}/display": {
             "get": {
                 "operationId": "assistant_api-display-user-file",
                 "summary": "Get a file of the current user",
@@ -1771,7 +1776,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/file/{fileId}/info": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/file/{fileId}/info": {
             "get": {
                 "operationId": "assistant_api-get-user-file-info",
                 "summary": "Get user file info",
@@ -1942,7 +1947,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/file/{fileId}/share": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/file/{fileId}/share": {
             "post": {
                 "operationId": "assistant_api-share-output-file",
                 "summary": "Share an output file",
@@ -2110,7 +2115,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/file/{fileId}/save": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/file/{fileId}/save": {
             "post": {
                 "operationId": "assistant_api-save-output-file",
                 "summary": "Save an output file",
@@ -2287,7 +2292,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/preview": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/preview": {
             "get": {
                 "operationId": "assistant_api-get-output-file-preview",
                 "summary": "Get task output file preview",
@@ -2452,7 +2457,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/info": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/info": {
             "get": {
                 "operationId": "assistant_api-get-output-file-info",
                 "summary": "Get task output file info",
@@ -2647,7 +2652,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/download": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/task/{ocpTaskId}/output-file/{fileId}/download": {
             "get": {
                 "operationId": "assistant_api-get-output-file",
                 "summary": "Get task output file",
@@ -2780,7 +2785,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/file-action/{fileId}/{taskTypeId}": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/file-action/{fileId}/{taskTypeId}": {
             "post": {
                 "operationId": "assistant_api-run-file-action",
                 "summary": "Run a file action",
@@ -2952,7 +2957,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/assistant-folder-path": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/assistant-folder-path": {
             "get": {
                 "operationId": "assistant_api-get-assistant-folder-path",
                 "summary": "Get the assistant folder's path",
@@ -3097,7 +3102,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/skills": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/skills": {
             "get": {
                 "operationId": "agent_skills_api-list-skills",
                 "summary": "List available skills for the current user",
@@ -3619,7 +3624,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/api/{apiVersion}/skills/{skillName}": {
+        "/ocs/v2.php/apps/ai_assistant/api/{apiVersion}/skills/{skillName}": {
             "get": {
                 "operationId": "agent_skills_api-load-skill",
                 "summary": "Load a skill's full content",
@@ -3887,7 +3892,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/sessions": {
+        "/ocs/v2.php/apps/ai_assistant/chat/sessions": {
             "post": {
                 "operationId": "chattyllm-new-session-restful",
                 "summary": "Create chat session",
@@ -3922,6 +3927,12 @@
                                         "nullable": true,
                                         "default": null,
                                         "description": "The session title"
+                                    },
+                                    "model": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "default": null,
+                                        "description": "The chat model to use for this session"
                                     }
                                 }
                             }
@@ -4274,7 +4285,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/sessions/{sessionId}": {
+        "/ocs/v2.php/apps/ai_assistant/chat/sessions/{sessionId}": {
             "put": {
                 "operationId": "chattyllm-update-chat-session-restful",
                 "summary": "Update session",
@@ -4307,6 +4318,12 @@
                                         "nullable": true,
                                         "default": null,
                                         "description": "The new is_remembered status: Whether to remember the insights from this chat session across all chat session"
+                                    },
+                                    "model": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "default": null,
+                                        "description": "The chat model to use for this session. Pass an empty string to clear it. Omit the field to leave it unchanged."
                                     }
                                 }
                             }
@@ -4539,7 +4556,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/new_session": {
+        "/ocs/v2.php/apps/ai_assistant/chat/new_session": {
             "put": {
                 "operationId": "chattyllm-new-session",
                 "summary": "Create chat session",
@@ -4574,6 +4591,12 @@
                                         "nullable": true,
                                         "default": null,
                                         "description": "The session title"
+                                    },
+                                    "model": {
+                                        "type": "string",
+                                        "nullable": true,
+                                        "default": null,
+                                        "description": "The chat model to use for this session"
                                     }
                                 }
                             }
@@ -4680,7 +4703,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/update_session": {
+        "/ocs/v2.php/apps/ai_assistant/chat/update_session": {
             "patch": {
                 "operationId": "chattyllm-update-session-title",
                 "summary": "Update session title",
@@ -4826,7 +4849,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/delete_session": {
+        "/ocs/v2.php/apps/ai_assistant/chat/delete_session": {
             "delete": {
                 "operationId": "chattyllm-delete-session",
                 "summary": "Delete a chat session",
@@ -4939,7 +4962,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/delete_sessions": {
+        "/ocs/v2.php/apps/ai_assistant/chat/delete_sessions": {
             "delete": {
                 "operationId": "chattyllm-delete-sessions",
                 "summary": "Delete chat sessions",
@@ -5073,7 +5096,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/new_message": {
+        "/ocs/v2.php/apps/ai_assistant/chat/new_message": {
             "put": {
                 "operationId": "chattyllm-new-message",
                 "summary": "Add a message",
@@ -5276,7 +5299,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/delete_message": {
+        "/ocs/v2.php/apps/ai_assistant/chat/delete_message": {
             "delete": {
                 "operationId": "chattyllm-delete-message",
                 "summary": "Delete a message",
@@ -5417,7 +5440,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/messages": {
+        "/ocs/v2.php/apps/ai_assistant/chat/messages": {
             "get": {
                 "operationId": "chattyllm-get-messages",
                 "summary": "Get session messages",
@@ -5580,7 +5603,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/sessions/{sessionId}/messages/{messageId}": {
+        "/ocs/v2.php/apps/ai_assistant/chat/sessions/{sessionId}/messages/{messageId}": {
             "get": {
                 "operationId": "chattyllm-get-message",
                 "summary": "Get a message",
@@ -5721,7 +5744,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/generate": {
+        "/ocs/v2.php/apps/ai_assistant/chat/generate": {
             "get": {
                 "operationId": "chattyllm-generate-for-session",
                 "summary": "Generate a new assistant message",
@@ -5894,7 +5917,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/regenerate": {
+        "/ocs/v2.php/apps/ai_assistant/chat/regenerate": {
             "get": {
                 "operationId": "chattyllm-regenerate-for-session",
                 "summary": "Regenerate response for a message",
@@ -6067,7 +6090,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/check_session": {
+        "/ocs/v2.php/apps/ai_assistant/chat/check_session": {
             "get": {
                 "operationId": "chattyllm-check-session",
                 "summary": "Check the status of a session",
@@ -6208,7 +6231,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/check_generation": {
+        "/ocs/v2.php/apps/ai_assistant/chat/check_generation": {
             "get": {
                 "operationId": "chattyllm-check-message-generation-task",
                 "summary": "Check the status of a generation task. The value of slow_pickup will be set to true if the task is not being picked up.",
@@ -6430,7 +6453,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/generate_title": {
+        "/ocs/v2.php/apps/ai_assistant/chat/generate_title": {
             "get": {
                 "operationId": "chattyllm-generate-title",
                 "summary": "Generate a session title",
@@ -6588,7 +6611,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/check_title_generation": {
+        "/ocs/v2.php/apps/ai_assistant/chat/check_title_generation": {
             "get": {
                 "operationId": "chattyllm-check-title-generation-task",
                 "summary": "Check the status of a title generation task",
@@ -6779,7 +6802,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/chat/agent_folders": {
+        "/ocs/v2.php/apps/ai_assistant/chat/agent_folders": {
             "get": {
                 "operationId": "chattyllm-get-agent-folders",
                 "summary": "Get the agent folders",
@@ -6896,7 +6919,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/assignments": {
+        "/ocs/v2.php/apps/ai_assistant/assignments": {
             "post": {
                 "operationId": "assignments_api-create-user-assignment",
                 "summary": "Create a new assignment",
@@ -7282,7 +7305,7 @@
                 }
             }
         },
-        "/ocs/v2.php/apps/assistant/assignments/{id}": {
+        "/ocs/v2.php/apps/ai_assistant/assignments/{id}": {
             "get": {
                 "operationId": "assignments_api-get-user-assignment",
                 "summary": "Get user's assignment",

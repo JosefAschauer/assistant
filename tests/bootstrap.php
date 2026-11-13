@@ -7,7 +7,7 @@
 
 require_once __DIR__ . '/../../../tests/bootstrap.php';
 
-use OCA\Assistant\AppInfo\Application;
+use OCA\AI_assistant\AppInfo\Application;
 use OCP\App\IAppManager;
 
 \OC::$server->get(IAppManager::class)->loadApp(Application::APP_ID);

@@ -5,38 +5,38 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\AppInfo;
+namespace OCA\AI_assistant\AppInfo;
 
-use OCA\Assistant\Capabilities;
-use OCA\Assistant\Listener\BeforeTemplateRenderedListener;
-use OCA\Assistant\Listener\ChattyLLMTaskListener;
-use OCA\Assistant\Listener\CSPListener;
-use OCA\Assistant\Listener\FileActionTaskFailedListener;
-use OCA\Assistant\Listener\FileActionTaskSuccessfulListener;
-use OCA\Assistant\Listener\FreePrompt\FreePromptReferenceListener;
-use OCA\Assistant\Listener\LoadAdditionalScriptsListener;
-use OCA\Assistant\Listener\NewFileMenuTaskFailedListener;
-use OCA\Assistant\Listener\NewFileMenuTaskSuccessfulListener;
-use OCA\Assistant\Listener\SpeechToText\SpeechToTextReferenceListener;
-use OCA\Assistant\Listener\TaskFailedListener;
-use OCA\Assistant\Listener\TaskOutputFileReferenceListener;
-use OCA\Assistant\Listener\TaskSuccessfulListener;
-use OCA\Assistant\Listener\Text2Image\Text2ImageReferenceListener;
-use OCA\Assistant\Listener\Text2Image\Text2StickerListener;
-use OCA\Assistant\Listener\UserDeletedListener;
-use OCA\Assistant\Notification\Notifier;
-use OCA\Assistant\Reference\FreePromptReferenceProvider;
-use OCA\Assistant\Reference\SpeechToTextReferenceProvider;
-use OCA\Assistant\Reference\TaskOutputFileReferenceProvider;
-use OCA\Assistant\Reference\Text2ImageReferenceProvider;
-use OCA\Assistant\Reference\Text2StickerProvider;
-use OCA\Assistant\TaskProcessing\AudioToAudioChatProvider;
-use OCA\Assistant\TaskProcessing\AudioToAudioTranslateProvider;
-use OCA\Assistant\TaskProcessing\ContextAgentAudioInteractionProvider;
-use OCA\Assistant\TaskProcessing\ImageToTextTranslateProvider;
-use OCA\Assistant\TaskProcessing\ImageToTextTranslateTaskType;
-use OCA\Assistant\TaskProcessing\TextToStickerProvider;
-use OCA\Assistant\TaskProcessing\TextToStickerTaskType;
+use OCA\AI_assistant\Capabilities;
+use OCA\AI_assistant\Listener\BeforeTemplateRenderedListener;
+use OCA\AI_assistant\Listener\ChattyLLMTaskListener;
+use OCA\AI_assistant\Listener\CSPListener;
+use OCA\AI_assistant\Listener\FileActionTaskFailedListener;
+use OCA\AI_assistant\Listener\FileActionTaskSuccessfulListener;
+use OCA\AI_assistant\Listener\FreePrompt\FreePromptReferenceListener;
+use OCA\AI_assistant\Listener\LoadAdditionalScriptsListener;
+use OCA\AI_assistant\Listener\NewFileMenuTaskFailedListener;
+use OCA\AI_assistant\Listener\NewFileMenuTaskSuccessfulListener;
+use OCA\AI_assistant\Listener\SpeechToText\SpeechToTextReferenceListener;
+use OCA\AI_assistant\Listener\TaskFailedListener;
+use OCA\AI_assistant\Listener\TaskOutputFileReferenceListener;
+use OCA\AI_assistant\Listener\TaskSuccessfulListener;
+use OCA\AI_assistant\Listener\Text2Image\Text2ImageReferenceListener;
+use OCA\AI_assistant\Listener\Text2Image\Text2StickerListener;
+use OCA\AI_assistant\Listener\UserDeletedListener;
+use OCA\AI_assistant\Notification\Notifier;
+use OCA\AI_assistant\Reference\FreePromptReferenceProvider;
+use OCA\AI_assistant\Reference\SpeechToTextReferenceProvider;
+use OCA\AI_assistant\Reference\TaskOutputFileReferenceProvider;
+use OCA\AI_assistant\Reference\Text2ImageReferenceProvider;
+use OCA\AI_assistant\Reference\Text2StickerProvider;
+use OCA\AI_assistant\TaskProcessing\AudioToAudioChatProvider;
+use OCA\AI_assistant\TaskProcessing\AudioToAudioTranslateProvider;
+use OCA\AI_assistant\TaskProcessing\ContextAgentAudioInteractionProvider;
+use OCA\AI_assistant\TaskProcessing\ImageToTextTranslateProvider;
+use OCA\AI_assistant\TaskProcessing\ImageToTextTranslateTaskType;
+use OCA\AI_assistant\TaskProcessing\TextToStickerProvider;
+use OCA\AI_assistant\TaskProcessing\TextToStickerTaskType;
 use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -53,7 +53,7 @@ use OCP\User\Events\UserDeletedEvent;
 
 class Application extends App implements IBootstrap {
 
-	public const APP_ID = 'assistant';
+	public const APP_ID = 'ai_assistant';
 
 	public const ASSISTANT_DATA_FOLDER_NAME = 'Assistant';
 

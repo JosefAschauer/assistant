@@ -7,13 +7,14 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Service;
+namespace OCA\AI_assistant\Tests\Unit\Service;
 
-use OCA\Assistant\Db\TaskNotificationMapper;
-use OCA\Assistant\Service\AssistantService;
-use OCA\Assistant\Service\NotificationService;
-use OCA\Assistant\Service\PreviewService;
-use OCA\Assistant\Service\SystemTagService;
+use OCA\AI_assistant\Db\TaskNotificationMapper;
+use OCA\AI_assistant\Service\AssistantService;
+use OCA\AI_assistant\Service\ChatModelService;
+use OCA\AI_assistant\Service\NotificationService;
+use OCA\AI_assistant\Service\PreviewService;
+use OCA\AI_assistant\Service\SystemTagService;
 use OCP\DB\Exception as DBException;
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -81,6 +82,7 @@ class AssistantServiceTest extends TestCase {
 			$this->createMock(IAppConfig::class),
 			$this->createMock(IShareManager::class),
 			$this->createMock(SystemTagService::class),
+			$this->createMock(ChatModelService::class),
 		);
 	}
 

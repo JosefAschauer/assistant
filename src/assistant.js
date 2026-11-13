@@ -17,15 +17,15 @@ export class TaskPollCancelledError extends Error {
 	}
 }
 
-window.assistantPollAbortController = null
-window.assistantPollTimerId = null
-window.assistantPollRetryTimerId = null
-window.assistantPollTaskId = null
-window.assistantPollPositionTimerId = null
-window.assistantPollPositionRetryTimerId = null
-window.assistantPollPositionTaskId = null
-window.assistantPollPositionAbortController = null
-window.assistantSchedulingAbortController = null
+window.aiAssistantPollAbortController = null
+window.aiAssistantPollTimerId = null
+window.aiAssistantPollRetryTimerId = null
+window.aiAssistantPollTaskId = null
+window.aiAssistantPollPositionTimerId = null
+window.aiAssistantPollPositionRetryTimerId = null
+window.aiAssistantPollPositionTaskId = null
+window.aiAssistantPollPositionAbortController = null
+window.aiAssistantSchedulingAbortController = null
 
 listen('taskprocessing:task_update', (type, body) => {
 	console.debug('[assistant] received task update push notification', type, body)
@@ -36,17 +36,17 @@ listen('taskprocessing:task_update', (type, body) => {
 		// in case it is not the currently selected task
 		getTask(taskId).then(response => {
 			const task = response.data?.ocs?.data?.task
-			emit('assistant:task:updated', task)
+			emit('ai_assistant:task:updated', task)
 		})
 	} else {
-		emit('assistant:task:status:updated', { taskId, status: newStatus })
+		emit('ai_assistant:task:status:updated', { taskId, status: newStatus })
 	}
 })
 
 /**
  * Creates an assistant modal and return a promise which provides the result
  *
- * OCA.Assistant.openAssistantForm({
+ * OCA.AIAssistant.openAssistantForm({
  *  appId: 'my_app_id',
  *  customId: 'my task custom ID',
  *  taskType: 'OCP\\TextProcessing\\FreePromptTaskType',
@@ -82,7 +82,7 @@ listen('taskprocessing:task_update', (type, body) => {
  * @return {Promise<unknown>}
  */
 export async function openAssistantForm({
-	appId, taskType = null, taskTypeIdList = null, input = '', inputs = {},
+	appId = 'ai_assistant', taskType = null, taskTypeIdList = null, input = '', inputs = {},
 	isInsideViewer = undefined, closeOnResult = false, actionButtons = undefined,
 	customId = '', identifier = '', mountPoint = null,
 }) {
@@ -93,11 +93,11 @@ export async function openAssistantForm({
 	const selectedTaskTypeId = taskType ?? (await getLastSelectedTaskType())?.data
 
 	return new Promise((resolve, reject) => {
-		if (OCA.Assistant.isAssistantDialogOpen) {
+		if (OCA.AIAssistant.isAssistantDialogOpen) {
 			reject(new Error('Assistant dialog is already open'))
 			return
 		}
-		OCA.Assistant.isAssistantDialogOpen = true
+		OCA.AIAssistant.isAssistantDialogOpen = true
 
 		let modalMountPoint
 		const content = document.querySelector('#content') ?? document.querySelector('#content-vue')
@@ -106,7 +106,7 @@ export async function openAssistantForm({
 			// if a mount point is specified, always use it
 			modalMountPoint = mountPoint
 		} else {
-			const modalId = 'assistantTextProcessingModal'
+			const modalId = 'aiAssistantTextProcessingModal'
 			modalMountPoint = document.createElement('div')
 			modalMountPoint.id = modalId
 			// the default mount point location is different whether the assistant is opened from the viewer or not
@@ -189,7 +189,7 @@ export async function openAssistantForm({
 			cancelTaskPolling()
 			cancelTaskPositionPolling()
 			app.unmount()
-			OCA.Assistant.isAssistantDialogOpen = false
+			OCA.AIAssistant.isAssistantDialogOpen = false
 			reject(new Error('User cancellation'))
 		})
 		const syncSubmit = (inputs, taskTypeId, newTaskCustomId = '') => {
@@ -207,10 +207,10 @@ export async function openAssistantForm({
 			view.selectedTaskTypeId = taskTypeId
 
 			const controller = new AbortController()
-			window.assistantSchedulingAbortController = controller
+			window.aiAssistantSchedulingAbortController = controller
 			scheduleTask(appId, newTaskCustomId, taskTypeId, inputs, controller.signal)
 				.then((response) => {
-					if (window.assistantSchedulingAbortController !== controller) {
+					if (window.aiAssistantSchedulingAbortController !== controller) {
 						return
 					}
 					cancelScheduling()
@@ -237,7 +237,7 @@ export async function openAssistantForm({
 						if (finishedTask.status === TASK_STATUS_STRING.successful) {
 							if (closeOnResult) {
 								app.unmount()
-								OCA.Assistant.isAssistantDialogOpen = false
+								OCA.AIAssistant.isAssistantDialogOpen = false
 							} else {
 								view.outputs = finishedTask?.output
 							}
@@ -261,7 +261,7 @@ export async function openAssistantForm({
 						view.showSyncTaskRunning = false
 						view.taskPosition = null
 						cancelTaskPositionPolling()
-						emit('assistant:task:updated', finishedTask)
+						emit('ai_assistant:task:updated', finishedTask)
 					}).catch(error => {
 						if (error instanceof TaskPollCancelledError) {
 							return
@@ -284,7 +284,7 @@ export async function openAssistantForm({
 					if (controller.signal.aborted) {
 						return
 					}
-					if (window.assistantSchedulingAbortController === controller) {
+					if (window.aiAssistantSchedulingAbortController === controller) {
 						cancelScheduling()
 					}
 					view.loading = false
@@ -393,7 +393,7 @@ export async function openAssistantForm({
 						view.showSyncTaskRunning = false
 						view.taskPosition = null
 						cancelTaskPositionPolling()
-						emit('assistant:task:updated', finishedTask)
+						emit('ai_assistant:task:updated', finishedTask)
 					}).catch(error => {
 						if (error instanceof TaskPollCancelledError) {
 							return
@@ -456,7 +456,7 @@ export async function openAssistantForm({
 				data.detail.button.onClick(lastTask)
 			}
 			app.unmount()
-			OCA.Assistant.isAssistantDialogOpen = false
+			OCA.AIAssistant.isAssistantDialogOpen = false
 		})
 	})
 }
@@ -492,20 +492,20 @@ export async function pollTaskPosition(taskId, obj, callback = updateTaskPositio
 	const { isCancel } = await import('@nextcloud/axios')
 	return new Promise((resolve, reject) => {
 		cancelTaskPositionPolling()
-		window.assistantPollPositionTaskId = taskId
+		window.aiAssistantPollPositionTaskId = taskId
 		const abortController = new AbortController()
-		window.assistantPollPositionAbortController = abortController
+		window.aiAssistantPollPositionAbortController = abortController
 		let retryDelay = 5000
 		let settled = false
 
 		const cleanup = () => {
-			clearTimeout(window.assistantPollPositionTimerId)
-			clearTimeout(window.assistantPollPositionRetryTimerId)
-			window.assistantPollPositionTimerId = null
-			window.assistantPollPositionRetryTimerId = null
-			if (window.assistantPollPositionTaskId === taskId) {
-				window.assistantPollPositionTaskId = null
-				window.assistantPollPositionAbortController = null
+			clearTimeout(window.aiAssistantPollPositionTimerId)
+			clearTimeout(window.aiAssistantPollPositionRetryTimerId)
+			window.aiAssistantPollPositionTimerId = null
+			window.aiAssistantPollPositionRetryTimerId = null
+			if (window.aiAssistantPollPositionTaskId === taskId) {
+				window.aiAssistantPollPositionTaskId = null
+				window.aiAssistantPollPositionAbortController = null
 			}
 		}
 
@@ -530,13 +530,13 @@ export async function pollTaskPosition(taskId, obj, callback = updateTaskPositio
 		})
 
 		const pollPositionOnce = () => {
-			if (window.assistantPollPositionTaskId !== taskId) {
+			if (window.aiAssistantPollPositionTaskId !== taskId) {
 				safeReject(new TaskPollCancelledError('pollTaskPosition cancelled'))
 				return
 			}
 
 			getTaskPosition(taskId, abortController.signal).then(response => {
-				if (window.assistantPollPositionTaskId !== taskId) {
+				if (window.aiAssistantPollPositionTaskId !== taskId) {
 					safeReject(new TaskPollCancelledError('pollTaskPosition cancelled'))
 					return
 				}
@@ -544,9 +544,9 @@ export async function pollTaskPosition(taskId, obj, callback = updateTaskPositio
 				if (obj) {
 					callback(taskPosition, obj)
 				}
-				if (window.assistantPollPositionTaskId === taskId) {
-					window.assistantPollPositionRetryTimerId = null
-					window.assistantPollPositionTimerId = setTimeout(pollPositionOnce, 5000)
+				if (window.aiAssistantPollPositionTaskId === taskId) {
+					window.aiAssistantPollPositionRetryTimerId = null
+					window.aiAssistantPollPositionTimerId = setTimeout(pollPositionOnce, 5000)
 				}
 			}).catch(error => {
 				if (isCancel(error)) {
@@ -572,8 +572,8 @@ export async function pollTaskPosition(taskId, obj, callback = updateTaskPositio
 				}
 
 				console.warn('[assistant] pollPosition temporary failure, will retry in ' + retryDelay + 'ms', error)
-				if (window.assistantPollPositionTaskId === taskId) {
-					window.assistantPollPositionRetryTimerId = setTimeout(() => {
+				if (window.aiAssistantPollPositionTaskId === taskId) {
+					window.aiAssistantPollPositionRetryTimerId = setTimeout(() => {
 						retryDelay = Math.min(retryDelay * 2, 60000)
 						pollPositionOnce()
 					}, retryDelay)
@@ -600,20 +600,20 @@ export async function pollTask(taskId, obj, updateOutput = true, callback = upda
 	const { isCancel } = await import('@nextcloud/axios')
 	return new Promise((resolve, reject) => {
 		cancelTaskPolling()
-		window.assistantPollTaskId = taskId
+		window.aiAssistantPollTaskId = taskId
 		const abortController = new AbortController()
-		window.assistantPollAbortController = abortController
+		window.aiAssistantPollAbortController = abortController
 		let retryDelay = 5000
 		let settled = false
 
 		const cleanup = () => {
-			clearTimeout(window.assistantPollTimerId)
-			clearTimeout(window.assistantPollRetryTimerId)
-			window.assistantPollTimerId = null
-			window.assistantPollRetryTimerId = null
-			if (window.assistantPollTaskId === taskId) {
-				window.assistantPollTaskId = null
-				window.assistantPollAbortController = null
+			clearTimeout(window.aiAssistantPollTimerId)
+			clearTimeout(window.aiAssistantPollRetryTimerId)
+			window.aiAssistantPollTimerId = null
+			window.aiAssistantPollRetryTimerId = null
+			if (window.aiAssistantPollTaskId === taskId) {
+				window.aiAssistantPollTaskId = null
+				window.aiAssistantPollAbortController = null
 			}
 		}
 
@@ -638,13 +638,13 @@ export async function pollTask(taskId, obj, updateOutput = true, callback = upda
 		})
 
 		const pollOnce = () => {
-			if (window.assistantPollTaskId !== taskId) {
+			if (window.aiAssistantPollTaskId !== taskId) {
 				safeReject(new TaskPollCancelledError())
 				return
 			}
 
 			getTask(taskId, abortController.signal).then(response => {
-				if (window.assistantPollTaskId !== taskId) {
+				if (window.aiAssistantPollTaskId !== taskId) {
 					safeReject(new TaskPollCancelledError())
 					return
 				}
@@ -654,8 +654,8 @@ export async function pollTask(taskId, obj, updateOutput = true, callback = upda
 				}
 				if (![TASK_STATUS_STRING.scheduled, TASK_STATUS_STRING.running].includes(task?.status)) {
 					safeResolve(task)
-				} else if (window.assistantPollTaskId === taskId) {
-					window.assistantPollTimerId = setTimeout(pollOnce, 2000)
+				} else if (window.aiAssistantPollTaskId === taskId) {
+					window.aiAssistantPollTimerId = setTimeout(pollOnce, 2000)
 				}
 			}).catch(error => {
 				if (isCancel(error)) {
@@ -677,8 +677,8 @@ export async function pollTask(taskId, obj, updateOutput = true, callback = upda
 				}
 
 				console.warn('[assistant] poll temporary failure, will retry in ' + retryDelay + 'ms', error)
-				if (window.assistantPollTaskId === taskId) {
-					window.assistantPollRetryTimerId = setTimeout(() => {
+				if (window.aiAssistantPollTaskId === taskId) {
+					window.aiAssistantPollRetryTimerId = setTimeout(() => {
 						retryDelay = Math.min(retryDelay * 2, 60000)
 						pollOnce()
 					}, retryDelay)
@@ -693,28 +693,28 @@ export async function pollTask(taskId, obj, updateOutput = true, callback = upda
 }
 
 export async function cancelTaskPolling() {
-	window.assistantPollAbortController?.abort()
-	clearTimeout(window.assistantPollTimerId)
-	clearTimeout(window.assistantPollRetryTimerId)
-	window.assistantPollTimerId = null
-	window.assistantPollRetryTimerId = null
-	window.assistantPollTaskId = null
-	window.assistantPollAbortController = null
+	window.aiAssistantPollAbortController?.abort()
+	clearTimeout(window.aiAssistantPollTimerId)
+	clearTimeout(window.aiAssistantPollRetryTimerId)
+	window.aiAssistantPollTimerId = null
+	window.aiAssistantPollRetryTimerId = null
+	window.aiAssistantPollTaskId = null
+	window.aiAssistantPollAbortController = null
 }
 
 export async function cancelTaskPositionPolling() {
-	window.assistantPollPositionAbortController?.abort()
-	clearTimeout(window.assistantPollPositionTimerId)
-	clearTimeout(window.assistantPollPositionRetryTimerId)
-	window.assistantPollPositionTimerId = null
-	window.assistantPollPositionRetryTimerId = null
-	window.assistantPollPositionTaskId = null
-	window.assistantPollPositionAbortController = null
+	window.aiAssistantPollPositionAbortController?.abort()
+	clearTimeout(window.aiAssistantPollPositionTimerId)
+	clearTimeout(window.aiAssistantPollPositionRetryTimerId)
+	window.aiAssistantPollPositionTimerId = null
+	window.aiAssistantPollPositionRetryTimerId = null
+	window.aiAssistantPollPositionTaskId = null
+	window.aiAssistantPollPositionAbortController = null
 }
 
 export async function cancelScheduling() {
-	window.assistantSchedulingAbortController?.abort()
-	window.assistantSchedulingAbortController = null
+	window.aiAssistantSchedulingAbortController?.abort()
+	window.aiAssistantSchedulingAbortController = null
 }
 
 export async function getTask(taskId, signal = null) {
@@ -736,7 +736,7 @@ export async function getTaskPosition(taskId, signal = null) {
 export async function getNotifyReady(taskId) {
 	const { default: axios } = await import('@nextcloud/axios')
 	const { generateOcsUrl } = await import('@nextcloud/router')
-	const url = generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/notify', { taskId })
+	const url = generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/notify', { taskId })
 	return axios.get(url, {})
 }
 
@@ -745,7 +745,7 @@ export async function setNotifyReady(taskId, enable) {
 	const { generateOcsUrl } = await import('@nextcloud/router')
 	return axios({
 		method: enable ? 'post' : 'delete',
-		url: generateOcsUrl('/apps/assistant/api/v1/task/{taskId}/notify', { taskId }),
+		url: generateOcsUrl('/apps/ai_assistant/api/v1/task/{taskId}/notify', { taskId }),
 	})
 }
 
@@ -793,7 +793,7 @@ export async function saveLastSelectedTaskType(taskType) {
 			last_task_type: taskType,
 		},
 	}
-	const url = generateUrl('/apps/assistant/config')
+	const url = generateUrl('/apps/ai_assistant/config')
 	return axios.put(url, req)
 }
 
@@ -806,7 +806,7 @@ async function getLastSelectedTaskType() {
 			key: 'last_task_type',
 		},
 	}
-	const url = generateUrl('/apps/assistant/config')
+	const url = generateUrl('/apps/ai_assistant/config')
 	return axios.get(url, req).catch(error => {
 		if (error.response?.status === 404) {
 			console.debug(t('assistant', 'No last task type available, falling back to default'))
@@ -818,7 +818,7 @@ async function getLastSelectedTaskType() {
 }
 
 async function saveLastTargetLanguage(targetLanguage) {
-	OCA.Assistant.last_target_language = targetLanguage
+	OCA.AIAssistant.last_target_language = targetLanguage
 
 	const { default: axios } = await import('@nextcloud/axios')
 	const { generateUrl } = await import('@nextcloud/router')
@@ -828,7 +828,7 @@ async function saveLastTargetLanguage(targetLanguage) {
 			last_target_language: targetLanguage,
 		},
 	}
-	const url = generateUrl('/apps/assistant/config')
+	const url = generateUrl('/apps/ai_assistant/config')
 	return axios.put(url, req)
 }
 
@@ -838,7 +838,7 @@ async function saveLastTargetLanguage(targetLanguage) {
  * @param {event} event the notification event
  */
 export function handleNotification(event) {
-	if (event.notification.app !== 'assistant' || event.action.type !== 'WEB') {
+	if (event.notification.app !== 'ai_assistant' || event.action.type !== 'WEB') {
 		return
 	}
 	// Handle the action click only if the task was scheduled by the assistant
@@ -890,10 +890,10 @@ export async function openAssistantTask(
 		actionButtons = undefined,
 		mountPoint = null,
 	} = {}) {
-	if (OCA.Assistant.isAssistantDialogOpen) {
+	if (OCA.AIAssistant.isAssistantDialogOpen) {
 		throw new Error('Assistant dialog is already open')
 	}
-	OCA.Assistant.isAssistantDialogOpen = true
+	OCA.AIAssistant.isAssistantDialogOpen = true
 
 	const { createApp } = await import('vue')
 	const { default: AssistantTextProcessingModal } = await import('./components/AssistantTextProcessingModal.vue')
@@ -905,7 +905,7 @@ export async function openAssistantTask(
 		// if a mount point is specified, always use it
 		modalMountPoint = mountPoint
 	} else {
-		const modalId = 'assistantTextProcessingModal'
+		const modalId = 'aiAssistantTextProcessingModal'
 		modalMountPoint = document.createElement('div')
 		modalMountPoint.id = modalId
 		// the default mount point location is different whether the assistant is opened from the viewer or not
@@ -977,14 +977,14 @@ export async function openAssistantTask(
 		cancelTaskPolling()
 		cancelTaskPositionPolling()
 		app.unmount()
-		OCA.Assistant.isAssistantDialogOpen = false
+		OCA.AIAssistant.isAssistantDialogOpen = false
 	})
 	modalMountPoint.addEventListener('submit', (data) => {
 		const controller = new AbortController()
-		window.assistantSchedulingAbortController = controller
+		window.aiAssistantSchedulingAbortController = controller
 		scheduleTask(task.appId, task.identifier ?? '', data.detail.selectedTaskTypeId, data.detail.inputs, controller.signal)
 			.then((response) => {
-				if (window.assistantSchedulingAbortController !== controller) {
+				if (window.aiAssistantSchedulingAbortController !== controller) {
 					return
 				}
 				cancelScheduling()
@@ -994,11 +994,11 @@ export async function openAssistantTask(
 				if (controller.signal.aborted) {
 					return
 				}
-				if (window.assistantSchedulingAbortController === controller) {
+				if (window.aiAssistantSchedulingAbortController === controller) {
 					cancelScheduling()
 				}
 				app.unmount()
-				OCA.Assistant.isAssistantDialogOpen = false
+				OCA.AIAssistant.isAssistantDialogOpen = false
 				console.error('Assistant scheduling error', error)
 				showError(
 					t('assistant', 'Assistant failed to schedule your task')
@@ -1020,10 +1020,10 @@ export async function openAssistantTask(
 		view.selectedTaskTypeId = taskTypeId
 
 		const controller = new AbortController()
-		window.assistantSchedulingAbortController = controller
-		scheduleTask('assistant', newTaskCustomId, taskTypeId, inputs, controller.signal)
+		window.aiAssistantSchedulingAbortController = controller
+		scheduleTask('ai_assistant', newTaskCustomId, taskTypeId, inputs, controller.signal)
 			.then((response) => {
-				if (window.assistantSchedulingAbortController !== controller) {
+				if (window.aiAssistantSchedulingAbortController !== controller) {
 					return
 				}
 				cancelScheduling()
@@ -1067,7 +1067,7 @@ export async function openAssistantTask(
 					view.showSyncTaskRunning = false
 					view.taskPosition = null
 					cancelTaskPositionPolling()
-					emit('assistant:task:updated', finishedTask)
+					emit('ai_assistant:task:updated', finishedTask)
 				}).catch(error => {
 					if (error instanceof TaskPollCancelledError) {
 						return
@@ -1090,7 +1090,7 @@ export async function openAssistantTask(
 				if (controller.signal.aborted) {
 					return
 				}
-				if (window.assistantSchedulingAbortController === controller) {
+				if (window.aiAssistantSchedulingAbortController === controller) {
 					cancelScheduling()
 				}
 				view.loading = false
@@ -1195,7 +1195,7 @@ export async function openAssistantTask(
 					view.showSyncTaskRunning = false
 					view.taskPosition = null
 					cancelTaskPositionPolling()
-					emit('assistant:task:updated', finishedTask)
+					emit('ai_assistant:task:updated', finishedTask)
 				}).catch(error => {
 					if (error instanceof TaskPollCancelledError) {
 						return
@@ -1258,7 +1258,7 @@ export async function openAssistantTask(
 			data.detail.button.onClick(lastTask)
 		}
 		app.unmount()
-		OCA.Assistant.isAssistantDialogOpen = false
+		OCA.AIAssistant.isAssistantDialogOpen = false
 	})
 }
 
@@ -1266,7 +1266,7 @@ export async function addAssistantMenuEntry() {
 	// changed in NC 31 header-right -> header-end
 	const headerRight = document.querySelector('#header .header-right') ?? document.querySelector('#header .header-end')
 	const menuEntry = document.createElement('div')
-	menuEntry.id = 'assistant'
+	menuEntry.id = 'ai-assistant-menu'
 	headerRight.prepend(menuEntry)
 
 	const { createApp } = await import('vue')
@@ -1277,14 +1277,14 @@ export async function addAssistantMenuEntry() {
 	view.mount(menuEntry)
 
 	menuEntry.addEventListener('click', () => {
-		if (OCA.Assistant.openingAssistant) {
+		if (OCA.AIAssistant.openingAssistant) {
 			return
 		}
-		OCA.Assistant.openingAssistant = true
+		OCA.AIAssistant.openingAssistant = true
 		setTimeout(() => {
-			OCA.Assistant.openingAssistant = false
+			OCA.AIAssistant.openingAssistant = false
 		}, 1000)
-		openAssistantForm({ appId: 'assistant' })
+		openAssistantForm({ appId: 'ai_assistant' })
 			.then(r => {
 				console.debug('[Assistant header menu entry] scheduled task', r)
 			})

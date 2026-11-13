@@ -5,11 +5,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Controller;
+namespace OCA\AI_assistant\Controller;
 
-use OCA\Assistant\ResponseDefinitions;
-use OCA\Assistant\Service\AssistantService;
-use OCA\Assistant\Service\TaskProcessingService;
+use OCA\AI_assistant\ResponseDefinitions;
+use OCA\AI_assistant\Service\AssistantService;
+use OCA\AI_assistant\Service\TaskProcessingService;
 use OCP\AppFramework\Db\MultipleObjectsReturnedException;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\AnonRateLimit;

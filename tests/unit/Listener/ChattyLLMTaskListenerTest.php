@@ -7,15 +7,16 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Listener;
+namespace OCA\AI_assistant\Tests\Unit\Listener;
 
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\MessageMapper;
-use OCA\Assistant\Db\ChattyLLM\Session;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
-use OCA\Assistant\Listener\ChattyLLMTaskListener;
-use OCA\Assistant\Service\NotificationService;
-use OCA\Assistant\Service\TaskProcessingService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\MessageMapper;
+use OCA\AI_assistant\Db\ChattyLLM\Session;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\Listener\ChattyLLMTaskListener;
+use OCA\AI_assistant\Service\NotificationService;
+use OCA\AI_assistant\Service\TaskProcessingService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\TaskProcessing\Events\TaskSuccessfulEvent;
 use OCP\TaskProcessing\Task;
@@ -64,7 +65,7 @@ class ChattyLLMTaskListenerTest extends TestCase {
 				'system_prompt' => '',
 				'history' => [],
 			],
-			'assistant:chatty-llm',
+			Application::APP_ID . ':chatty-llm',
 			'admin',
 			'chatty-llm:' . self::SESSION_ID,
 		);
@@ -122,7 +123,7 @@ class ChattyLLMTaskListenerTest extends TestCase {
 				'system_prompt' => '',
 				'history' => [],
 			],
-			'assistant:chatty-llm',
+			Application::APP_ID . ':chatty-llm',
 			'admin',
 			'chatty-title:' . self::SESSION_ID,
 		);

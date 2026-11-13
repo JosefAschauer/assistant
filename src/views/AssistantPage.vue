@@ -72,7 +72,7 @@ export default {
 
 	data() {
 		return {
-			task: loadState('assistant', 'task'),
+			task: loadState('ai_assistant', 'task'),
 			showSyncTaskRunning: false,
 			taskPosition: null,
 			progress: null,
@@ -223,7 +223,7 @@ export default {
 						this.taskPosition = null
 						// the position polling would stop on the next request but why not stopping it right now
 						cancelTaskPositionPolling()
-						emit('assistant:task:updated', finishedTask)
+						emit('ai_assistant:task:updated', finishedTask)
 					}).catch(error => {
 						if (error instanceof TaskPollCancelledError) {
 							return
@@ -339,7 +339,7 @@ export default {
 						this.showSyncTaskRunning = false
 						this.taskPosition = null
 						cancelTaskPositionPolling()
-						emit('assistant:task:updated', finishedTask)
+						emit('ai_assistant:task:updated', finishedTask)
 					}).catch(error => {
 						if (error instanceof TaskPollCancelledError) {
 							return

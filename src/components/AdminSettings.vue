@@ -286,7 +286,7 @@ export default {
 
 	data() {
 		return {
-			state: loadState('assistant', 'admin-config'),
+			state: loadState('ai_assistant', 'admin-config'),
 			textFieldSaveTimer: null,
 			inputErrorTimer: null,
 			optionsToSave: {},
@@ -338,7 +338,7 @@ export default {
 			this.saveGlobalSkillsFolder('')
 		},
 		saveGlobalSkillsFolder(path) {
-			const url = generateUrl('/apps/assistant/admin-config/global-skills')
+			const url = generateUrl('/apps/ai_assistant/admin-config/global-skills')
 			return axios.put(url, { path })
 				.then(() => {
 					this.state.global_skills_path = path
@@ -360,7 +360,7 @@ export default {
 			const req = {
 				values,
 			}
-			const url = generateUrl('/apps/assistant/admin-config')
+			const url = generateUrl('/apps/ai_assistant/admin-config')
 			return axios.put(url, req)
 				.then(() => {
 					showSuccess(t('assistant', 'Assistant admin options saved'))

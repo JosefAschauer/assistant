@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant;
+namespace OCA\AI_assistant;
 
 use OCP\TaskProcessing\ShapeDescriptor;
 
@@ -60,7 +60,8 @@ use OCP\TaskProcessing\ShapeDescriptor;
  *     summary: ?string,
  *     is_remembered: bool,
  *     is_summary_up_to_date: bool,
- *     assignment_id: ?int
+ *     assignment_id: ?int,
+ *     model: ?string,
  * }
  *
  * @psalm-type AssistantChatMessage = array{

@@ -7,14 +7,15 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Service;
+namespace OCA\AI_assistant\Tests\Unit\Service;
 
-use OCA\Assistant\Db\ChattyLLM\Message;
-use OCA\Assistant\Db\ChattyLLM\MessageMapper;
-use OCA\Assistant\Db\ChattyLLM\Session;
-use OCA\Assistant\Db\ChattyLLM\SessionMapper;
-use OCA\Assistant\Service\ChatService;
-use OCA\Assistant\Service\SessionSummaryService;
+use OCA\AI_assistant\Db\ChattyLLM\Message;
+use OCA\AI_assistant\Db\ChattyLLM\MessageMapper;
+use OCA\AI_assistant\Db\ChattyLLM\Session;
+use OCA\AI_assistant\Db\ChattyLLM\SessionMapper;
+use OCA\AI_assistant\Service\ChatModelService;
+use OCA\AI_assistant\Service\ChatService;
+use OCA\AI_assistant\Service\SessionSummaryService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\DB\Exception;
@@ -81,6 +82,7 @@ class ChatServiceAgencyTest extends TestCase {
 			$this->taskProcessingManager,
 			$this->createMock(LoggerInterface::class),
 			$this->createMock(ITimeFactory::class),
+			new ChatModelService($this->taskProcessingManager, $this->createMock(IL10N::class)),
 		);
 	}
 

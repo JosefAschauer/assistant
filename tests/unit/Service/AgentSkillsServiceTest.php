@@ -7,11 +7,11 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Tests\Unit\Service;
+namespace OCA\AI_assistant\Tests\Unit\Service;
 
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Service\AgentSkillsService;
-use OCA\Assistant\Service\AssistantService;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Service\AgentSkillsService;
+use OCA\AI_assistant\Service\AssistantService;
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\Files\IRootFolder;

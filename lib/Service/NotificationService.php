@@ -5,11 +5,11 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace OCA\Assistant\Service;
+namespace OCA\AI_assistant\Service;
 
 use DateTime;
-use OCA\Assistant\AppInfo\Application;
-use OCA\Assistant\Db\ChattyLLM\Session;
+use OCA\AI_assistant\AppInfo\Application;
+use OCA\AI_assistant\Db\ChattyLLM\Session;
 use OCP\IURLGenerator;
 use OCP\Notification\IManager as INotificationManager;
 use OCP\TaskProcessing\Task;

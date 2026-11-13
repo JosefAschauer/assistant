@@ -5,5 +5,5 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-$appId = OCA\Assistant\AppInfo\Application::APP_ID;
+$appId = OCA\AI_assistant\AppInfo\Application::APP_ID;
 \OCP\Util::addScript($appId, $appId . '-assistantPage');

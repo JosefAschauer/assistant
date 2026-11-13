@@ -60,7 +60,7 @@ function registerSummarizeAction() {
 			const { default: axios } = await import('@nextcloud/axios')
 			const { generateOcsUrl } = await import('@nextcloud/router')
 			const { showError, showSuccess } = await import('@nextcloud/dialogs')
-			const url = generateOcsUrl('/apps/assistant/api/v1/file-action/{fileId}/core:text2text:summary', { fileId: node.fileid })
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/file-action/{fileId}/core:text2text:summary', { fileId: node.fileid })
 			try {
 				await axios.post(url)
 				showSuccess(
@@ -99,7 +99,7 @@ function registerTtsAction() {
 			const { default: axios } = await import('@nextcloud/axios')
 			const { generateOcsUrl } = await import('@nextcloud/router')
 			const { showError, showSuccess } = await import('@nextcloud/dialogs')
-			const url = generateOcsUrl('/apps/assistant/api/v1/file-action/{fileId}/core:text2speech', { fileId: node.fileid })
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/file-action/{fileId}/core:text2speech', { fileId: node.fileid })
 			try {
 				await axios.post(url)
 				showSuccess(
@@ -138,7 +138,7 @@ function registerSttAction() {
 			const { default: axios } = await import('@nextcloud/axios')
 			const { generateOcsUrl } = await import('@nextcloud/router')
 			const { showError, showSuccess } = await import('@nextcloud/dialogs')
-			const url = generateOcsUrl('/apps/assistant/api/v1/file-action/{fileId}/core:audio2text', { fileId: node.fileid })
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/file-action/{fileId}/core:audio2text', { fileId: node.fileid })
 			try {
 				await axios.post(url)
 				showSuccess(
@@ -177,7 +177,7 @@ function registerSttSubtitlesAction() {
 			const { default: axios } = await import('@nextcloud/axios')
 			const { generateOcsUrl } = await import('@nextcloud/router')
 			const { showError, showSuccess } = await import('@nextcloud/dialogs')
-			const url = generateOcsUrl('/apps/assistant/api/v1/file-action/{fileId}/core:audio2text:subtitles', { fileId: node.fileid })
+			const url = generateOcsUrl('/apps/ai_assistant/api/v1/file-action/{fileId}/core:audio2text:subtitles', { fileId: node.fileid })
 			try {
 				await axios.post(url)
 				showSuccess(
@@ -195,10 +195,10 @@ function registerSttSubtitlesAction() {
 	registerFileAction(sttSubtitlesAction)
 }
 
-const assistantEnabled = loadState('assistant', 'assistant-enabled', false)
-const summarizeAvailable = loadState('assistant', 'summarize-available', false)
-const sttAvailable = loadState('assistant', 'stt-available', false)
-const ttsAvailable = loadState('assistant', 'tts-available', false)
+const assistantEnabled = loadState('ai_assistant', 'assistant-enabled', false)
+const summarizeAvailable = loadState('ai_assistant', 'summarize-available', false)
+const sttAvailable = loadState('ai_assistant', 'stt-available', false)
+const ttsAvailable = loadState('ai_assistant', 'tts-available', false)
 
 if (assistantEnabled) {
 	if (summarizeAvailable || sttAvailable || ttsAvailable) {
