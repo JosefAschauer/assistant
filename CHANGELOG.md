@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Name this instance "Nextcloud Custom Assistant" so its header icon is distinct from the stock Nextcloud Assistant.
+- Document this fork in the README and in the user and developer docs, including per-conversation chat model selection and the `ai_assistant` app id.
 
 ## 4.1.0 - 2026-10-26
 

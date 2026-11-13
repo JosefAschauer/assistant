@@ -13,7 +13,7 @@ You can disable the assistant top menu entry there. You can also disable the AI-
 
 ### Run a task
 
-To run a task with the Assistant, just open it via the top menu entry (on the top right).
+To run a task with this fork, open **Nextcloud Custom Assistant** via its header icon (on the top right). The stock **Nextcloud Assistant** icon, when that app is enabled, opens the other app.
 
 ![top right icon](../img/top.right.button.png)
 
@@ -48,7 +48,17 @@ You can have different conversations, click on *New conversation* to open a new 
 
 ![chait with ai](../img/chat.with.ai.png)
 
-Every conversation has its own context, but you can use the "Remember this" toggle to add a conversation to the long-term memory of the AI. The context of remembered conversations is then available in any other conversation. To reverse this and delete a conversation from memory, turn the toggle off again.
+Every conversation has its own context, but you can use the "Remember this" toggle to add a conversation to the long-term memory of the AI. The context of remembered conversations is then available in any other conversation. To reverse this and delete a conversation from memory, turn the toggle off again. That toggle does not change the model selected for the conversation.
+
+### Choose a model
+
+Chat with AI uses the same model control as the other canvases, such as Work with text. At the bottom right of the conversation, open the three-dot menu and choose **Show advanced options**. The model field is there.
+
+The selected model is kept on that conversation only. It is not an instance-wide provider setting. A new conversation starts without a saved model until you pick one. Clear the field to drop the saved model.
+
+The three-dot menu appears when a model list is available: from the chat task type, from Work with text, from another text task type, or from the installed chat providers when there are at least two and no task type offers a list. With a single provider and no list, there is no menu.
+
+When the Context Agent runs the reply, its inner language-model tasks are scheduled by that app. The conversation model is then used only if the agency task accepts a model input, or if one of its providers matches the selection.
 
 In the Assistant page of your Personal settings, you can find a list of all your remembered conversations.
 

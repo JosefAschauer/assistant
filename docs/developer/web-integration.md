@@ -2,9 +2,9 @@
   - SPDX-FileCopyrightText: 2024 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
-# Integrating the assistant
+# Integrating Nextcloud Custom Assistant
 
-This section is about integrating the assistant in Nextcloud's web frontend.
+This section is about integrating this fork in Nextcloud's web frontend. Use `OCA.AIAssistant`, not `OCA.Assistant`. The stock assistant, if it is installed, still owns `OCA.Assistant`.
 
 The assistant can be used anywhere in Nextcloud's frontend. The assistant modal can be opened with or without initial input.
 It can also be opened to see the result of a task.
@@ -15,20 +15,20 @@ There are 2 ways to display a task with the assistant.
 
 ### Open the assistant modal
 
-If you get a task with the `/ocs/v2.php/apps/assistant/api/v1/task/TASK_ID` or `/ocs/v2.php/apps/assistant/api/v1/tasks` OCS endpoint,
-you can display it in the assistant UI by using the `OCA.Assistant.openAssistantTask` helper function.
+If you get a task with the `/ocs/v2.php/apps/ai_assistant/api/v1/task/TASK_ID` or `/ocs/v2.php/apps/ai_assistant/api/v1/tasks` OCS endpoint,
+you can display it in this fork's UI by using the `OCA.AIAssistant.openAssistantTask` helper function.
 This function takes the task object as parameter. Calling it will open the assistant and load the task values
 (task type, input and output) in the UI.
 
 ### Browse the assistant task result page
 
 There is a standalone page to display results of a task:
-`/apps/assistant/task/view/TASK_ID`
+`/apps/ai_assistant/task/view/TASK_ID`
 It has the exact same content as the assistant modal.
 
 ## Run a task
 
-A helper function is exposed as `OCA.Assistant.openAssistantForm`. It opens the assistant modal.
+A helper function is exposed as `OCA.AIAssistant.openAssistantForm`. It opens this fork's modal. The `appId` argument is the id of the app that is opening the form, not `ai_assistant`, unless this fork itself is the caller.
 
 It accepts one parameter which is an object that can contain those keys:
 * appId: [string, mandatory] app id of the app currently displayed
@@ -67,7 +67,7 @@ The promise resolves with a task object which looks like:
 
 Complete example:
 ``` javascript
-OCA.Assistant.openAssistantForm({
+OCA.AIAssistant.openAssistantForm({
 	appId: 'my_app_id',
 	customId: 'my custom identifier',
 	taskType: 'core:text2text',
@@ -99,13 +99,13 @@ You might want to initialize an input field with the content of a file.
 This is possible by passing a file path or ID like this:
 
 ``` javascript
-OCA.Assistant.openAssistantForm({
+OCA.AIAssistant.openAssistantForm({
 	appId: 'my_app_id',
 	customId: 'my custom identifier',
 	taskType: 'core:text2text',
 	inputs: { input: { fileId: 123 } },
 })
-OCA.Assistant.openAssistantForm({
+OCA.AIAssistant.openAssistantForm({
 	appId: 'my_app_id',
 	customId: 'my custom identifier',
 	taskType: 'core:text2text',
