@@ -13,3 +13,7 @@ node_modules
 
 /vendor/
 /tests/.phpunit*cache
+
+# Local agent notes for this fork. Do not publish.
+/GROK.md
+/.grok/
